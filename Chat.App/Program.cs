@@ -24,26 +24,12 @@ builder.Services.AddScoped<IChatDataService, ChatDataService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserDataService, UserDataService>();
 builder.Services.AddAuthorizationCore();
-builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSingleton<TokenService>();
-builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddSession(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
-
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    app.UseHsts();
-}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
