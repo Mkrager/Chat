@@ -1,0 +1,12 @@
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\bin\Debug\ChatDbIdentity.dacpac
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\bin\Debug\ChatDbIdentity.dll
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\bin\Debug\ChatDbIdentity.pdb
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\obj\Debug\ChatDbIdentity.sqlproj.AssemblyReference.cache
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\obj\Debug\ChatDbIdentity.dll
+C:\Users\Smaga\source\repos\Chat\ChatDbIdentity\obj\Debug\ChatDbIdentity.pdb
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\bin\Debug\ChatDbIdentity.dacpac
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\bin\Debug\ChatDbIdentity.dll
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\bin\Debug\ChatDbIdentity.pdb
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\obj\Debug\ChatDbIdentity.sqlproj.AssemblyReference.cache
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\obj\Debug\ChatDbIdentity.dll
+C:\Users\Smaga\Desktop\Chat-master\ChatDbIdentity\obj\Debug\ChatDbIdentity.pdb

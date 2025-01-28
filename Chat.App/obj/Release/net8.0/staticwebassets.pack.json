@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chat.App.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Chat.App.gmdo96rj45.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\style.css",
+      "PackagePath": "staticwebassets\\style.css"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.Chat.App.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.Chat.App.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.Chat.App.props",
+      "PackagePath": "build\\Chat.App.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Chat.App.props",
+      "PackagePath": "buildMultiTargeting\\Chat.App.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.Chat.App.props",
+      "PackagePath": "buildTransitive\\Chat.App.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

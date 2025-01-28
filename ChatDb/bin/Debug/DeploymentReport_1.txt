@@ -1,0 +1,20 @@
+﻿** Highlights
+     Tables that will be recreated with data migrated
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[__EFMigrationsHistory] (Table)
+       [dbo].[Messages] (Table)
+       [dbo].[Messages].[IX_Messages_UserId] (Index)
+       [dbo].[Users] (Table)
+       Default Constraint: unnamed constraint on [dbo].[Messages] (Default Constraint)
+       [dbo].[FK_Messages_Users_UserId] (Foreign Key)
+
+** Supporting actions
