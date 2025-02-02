@@ -80,7 +80,7 @@ namespace Chat.App.Services
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "https://your-api-url.com/api/account/details");
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7184/api/account/details");
 
                 var response = await _httpClient.SendAsync(request);
 
