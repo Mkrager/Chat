@@ -1,0 +1,28 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/Chat.App/Chat.App.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\Chat.App.gmdo96rj45.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-\u002BEsVd2X8OdUr0Kq\u002BY8TzPmidHTNc/SZIyiQjV8pyTCI="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2183"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022\u002BEsVd2X8OdUr0Kq\u002BY8TzPmidHTNc/SZIyiQjV8pyTCI=\u0022"},{"Name":"Last-Modified","Value":"Tue, 28 Jan 2025 13:35:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Chat.App/Chat.App.gmdo96rj45.bundle.scp.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\Chat.App.gmdo96rj45.bundle.scp.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"gmdo96rj45"},{"Name":"integrity","Value":"sha256-\u002BEsVd2X8OdUr0Kq\u002BY8TzPmidHTNc/SZIyiQjV8pyTCI="},{"Name":"label","Value":"_content/Chat.App/Chat.App.bundle.scp.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2183"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022\u002BEsVd2X8OdUr0Kq\u002BY8TzPmidHTNc/SZIyiQjV8pyTCI=\u0022"},{"Name":"Last-Modified","Value":"Tue, 28 Jan 2025 13:35:03 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Chat.App/style.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\style.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-dfyu4VNqgtCy1tDif8EMFN1zOzF5a\u002Bh3w3EdmRFgiJM="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"3659"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dfyu4VNqgtCy1tDif8EMFN1zOzF5a\u002Bh3w3EdmRFgiJM=\u0022"},{"Name":"Last-Modified","Value":"Mon, 27 Jan 2025 01:27:09 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Chat.App/style.jq5q8rtt4z.css">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\style.css'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"jq5q8rtt4z"},{"Name":"integrity","Value":"sha256-dfyu4VNqgtCy1tDif8EMFN1zOzF5a\u002Bh3w3EdmRFgiJM="},{"Name":"label","Value":"_content/Chat.App/style.css"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"3659"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022dfyu4VNqgtCy1tDif8EMFN1zOzF5a\u002Bh3w3EdmRFgiJM=\u0022"},{"Name":"Last-Modified","Value":"Mon, 27 Jan 2025 01:27:09 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
