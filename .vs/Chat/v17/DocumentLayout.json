@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Smaga\\source\\repos\\Chat\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CC81957D-4E59-4F29-BA16-82E646A90F68}|Chat.App\\Chat.App.csproj|c:\\users\\smaga\\source\\repos\\chat\\chat.app\\chat.app.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CC81957D-4E59-4F29-BA16-82E646A90F68}|Chat.App\\Chat.App.csproj|solutionrelative:chat.app\\chat.app.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CDF75487-341E-4C8F-80C1-9FC03C9918A6}|Chat.Api\\Chat.Api.csproj|c:\\users\\smaga\\source\\repos\\chat\\chat.api\\chat.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{CDF75487-341E-4C8F-80C1-9FC03C9918A6}|Chat.Api\\Chat.Api.csproj|solutionrelative:chat.api\\chat.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Chat.App",
+              "DocumentMoniker": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.App\\Chat.App.csproj",
+              "RelativeDocumentMoniker": "Chat.App\\Chat.App.csproj",
+              "ToolTip": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.App\\Chat.App.csproj",
+              "RelativeToolTip": "Chat.App\\Chat.App.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-02-18T14:35:04.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Chat.Api",
+              "DocumentMoniker": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Api\\Chat.Api.csproj",
+              "RelativeDocumentMoniker": "Chat.Api\\Chat.Api.csproj",
+              "ToolTip": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Api\\Chat.Api.csproj",
+              "RelativeToolTip": "Chat.Api\\Chat.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-02-18T14:34:54.553Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

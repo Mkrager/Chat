@@ -1,0 +1,331 @@
+{
+  "Version": 1,
+  "Hash": "AQt+mK9tEHdvYR5VFyRMGNjbhtMYk028+LD/Fm3EYfg=",
+  "Source": "Chat.App",
+  "BasePath": "_content/Chat.App",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Chat.App\\wwwroot",
+      "Source": "Chat.App",
+      "ContentRoot": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\",
+      "BasePath": "_content/Chat.App",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chat.App.styles.css",
+      "SourceId": "Chat.App",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/Chat.App",
+      "RelativePath": "Chat.App#[.{fingerprint}]?.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "Fingerprint": "gmdo96rj45",
+      "Integrity": "+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chat.App.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chat.App.bundle.scp.css",
+      "SourceId": "Chat.App",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/Chat.App",
+      "RelativePath": "Chat.App#[.{fingerprint}]!.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "Fingerprint": "gmdo96rj45",
+      "Integrity": "+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chat.App.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\style.css",
+      "SourceId": "Chat.App",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\",
+      "BasePath": "_content/Chat.App",
+      "RelativePath": "style#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "jq5q8rtt4z",
+      "Integrity": "dfyu4VNqgtCy1tDif8EMFN1zOzF5a+h3w3EdmRFgiJM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\style.css"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "Chat.App.bundle.scp.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chat.App.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 28 Jan 2025 13:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI="
+        }
+      ]
+    },
+    {
+      "Route": "Chat.App.gmdo96rj45.bundle.scp.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Chat.App.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 28 Jan 2025 13:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gmdo96rj45"
+        },
+        {
+          "Name": "label",
+          "Value": "Chat.App.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI="
+        }
+      ]
+    },
+    {
+      "Route": "Chat.App.gmdo96rj45.styles.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chat.App.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 28 Jan 2025 13:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "gmdo96rj45"
+        },
+        {
+          "Name": "label",
+          "Value": "Chat.App.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI="
+        }
+      ]
+    },
+    {
+      "Route": "Chat.App.styles.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\obj\\Release\\net8.0\\scopedcss\\bundle\\Chat.App.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 28 Jan 2025 13:34:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-+EsVd2X8OdUr0Kq+Y8TzPmidHTNc/SZIyiQjV8pyTCI="
+        }
+      ]
+    },
+    {
+      "Route": "style.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\style.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3659"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dfyu4VNqgtCy1tDif8EMFN1zOzF5a+h3w3EdmRFgiJM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 27 Jan 2025 01:27:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dfyu4VNqgtCy1tDif8EMFN1zOzF5a+h3w3EdmRFgiJM="
+        }
+      ]
+    },
+    {
+      "Route": "style.jq5q8rtt4z.css",
+      "AssetFile": "C:\\Users\\Smaga\\Desktop\\Chat-master\\Chat.App\\wwwroot\\style.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3659"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dfyu4VNqgtCy1tDif8EMFN1zOzF5a+h3w3EdmRFgiJM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 27 Jan 2025 01:27:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jq5q8rtt4z"
+        },
+        {
+          "Name": "label",
+          "Value": "style.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dfyu4VNqgtCy1tDif8EMFN1zOzF5a+h3w3EdmRFgiJM="
+        }
+      ]
+    }
+  ]
+}

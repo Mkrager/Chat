@@ -1,0 +1,7 @@
+{
+  "Chat.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Api",
+  "Chat.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Application",
+  "Chat.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Domain",
+  "Chat.Identity, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Identity",
+  "Chat.Persistence, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "C:\\Users\\Smaga\\source\\repos\\Chat\\Chat.Persistence"
+}
