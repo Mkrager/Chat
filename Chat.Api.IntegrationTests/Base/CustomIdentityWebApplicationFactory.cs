@@ -31,7 +31,7 @@ namespace Chat.Api.IntegrationTests.Base
                 {
                     var scopedServices = scope.ServiceProvider;
                     var context = scopedServices.GetRequiredService<ChatIdentityDbContext>();
-                    var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+                    var logger = scopedServices.GetRequiredService<ILogger<CustomIdentityWebApplicationFactory<TStartup>>>();
 
                     try
                     {
@@ -53,10 +53,9 @@ namespace Chat.Api.IntegrationTests.Base
             });
         }
 
-        public HttpClient GetAnonymousClient()
+        public HttpClient GetAuthenticatedClient()
         {
             return CreateClient();
         }
-
     }
 }

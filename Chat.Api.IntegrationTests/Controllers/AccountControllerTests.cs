@@ -18,7 +18,7 @@ namespace Chat.Api.IntegrationTests.Controllers
         [Fact]
         public async Task Register_ReturnSucces()
         {
-            var client = _factory.GetAnonymousClient();
+            var client = _factory.GetAuthenticatedClient();
 
             var registrationRequest = new RegistrationRequest()
             {
@@ -47,7 +47,7 @@ namespace Chat.Api.IntegrationTests.Controllers
         [Fact]
         public async Task Authentication_ReturnSucces()
         {
-            var client = _factory.GetAnonymousClient();
+            var client = _factory.GetAuthenticatedClient();
 
             var registrationRequest = new RegistrationRequest()
             {
