@@ -1,8 +1,6 @@
 ﻿using Chat.Application.Contracts.Identity;
 using Chat.Application.DTOs;
 using Chat.Identity.Models;
-using Chat.Persistence;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,17 +15,13 @@ namespace Chat.Identity.Service
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ChatDbContext _chatDbContext;
 
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings, IHttpContextAccessor httpContextAccessor, ChatDbContext chatDbContext)
+        public AuthenticationService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings)
         {
             _jwtSettings = jwtSettings.Value;
             _userManager = userManager;
             _signInManager = signInManager;
-            _httpContextAccessor = httpContextAccessor;
-            _chatDbContext = chatDbContext;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -36,28 +30,17 @@ namespace Chat.Identity.Service
 
             if (user == null)
             {
-                throw new Exception($"User with {request.Email} not found.");
+                throw new UnauthorizedAccessException($"Invalid email or password.");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
-                throw new Exception($"Email or Password invalid");
+                throw new UnauthorizedAccessException($"Invalid email or password.");
             }
 
             JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
-
-            var token = jwtSecurityToken;
-
-            var tokenToSend = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            _httpContextAccessor.HttpContext.Response.Cookies.Append("access_token", tokenToSend, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMonths(1)
-            });
 
             AuthenticationResponse response = new AuthenticationResponse
             {
@@ -69,6 +52,7 @@ namespace Chat.Identity.Service
 
             return response;
         }
+
         public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
         {
             if (string.IsNullOrEmpty(request.Password))

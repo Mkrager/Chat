@@ -4,6 +4,8 @@ using Chat.Persistence;
 using Chat.Application.ChatHub;
 using Chat.Identity;
 using Chat.Api.Middlewares;
+using Chat.Api.Services;
+using Chat.Application.Contracts;
 
 namespace Chat.Api
 {
@@ -17,6 +19,8 @@ namespace Chat.Api
             builder.Services.AddApplicationService();
             builder.Services.AddIdentityServices(builder.Configuration);
             builder.Services.AddPersistenceServices(builder.Configuration);
+
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             builder.Services.AddHttpContextAccessor();
 
