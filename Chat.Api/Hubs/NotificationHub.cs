@@ -24,15 +24,15 @@ namespace Chat.Api.Hubs
             await Clients.Caller.SendAsync("GroupLeft", groupName);
         }
 
-        public async Task SendMessageToGroup(string groupName, string senderName, string message, string receiverUserId)
+        public async Task SendMessageToGroup(string groupName, string message, string receiverUserId)
         {
-            var result = _mediator.Send(new PostMessageCommand()
+            var result = await _mediator.Send(new PostMessageCommand()
             {
                 Content = message,
                 ReceiverId = receiverUserId
             });
 
-            await Clients.Group(groupName).SendAsync("SendMessage", senderName, message);
+            await Clients.Group(groupName).SendAsync("SendMessage", message);
         }
     }
 }

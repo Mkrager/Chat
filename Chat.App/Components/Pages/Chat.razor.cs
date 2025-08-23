@@ -31,7 +31,7 @@ namespace Chat.App.Components.Pages
 
         private string _receiverUserId = null;
         private string _currentUserId = null;
-
+        private string _userName;
         private HubConnection? _hubConnection;
         private string _message = string.Empty;
         private string? jwtToken;
@@ -68,12 +68,11 @@ namespace Chat.App.Components.Pages
                         })
                         .Build();
 
-                    _hubConnection.On<string, string>("SendMessage", (senderName, message) =>
+                    _hubConnection.On<string>("SendMessage", (message) =>
                     {
                         var newMessage = new MessageListViewModel
                         {
                             Content = message,
-                            SenderUserName = senderName,
                         };
 
                         Messages.Add(newMessage);

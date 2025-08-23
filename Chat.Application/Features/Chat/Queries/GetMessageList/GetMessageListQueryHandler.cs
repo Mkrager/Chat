@@ -27,7 +27,13 @@ namespace Chat.Application.Features.Chat.Queries.GetMessageList
                 .Distinct()
                 .ToList();
 
-            var user = _userService.GetUserDetailsAsync(request.UserId);
+            var users = await _userService.GetUsersByIdsAsync(userIds);
+
+            foreach (var message in messagesDto)
+            {
+                message.SenderUserName = users.First(u => u.UserId == message.CreatedBy).UserName;
+                message.ReceiverUserName = users.First(u => u.UserId == message.ReceiverId).UserName;
+            }
 
             return messagesDto;
         }
