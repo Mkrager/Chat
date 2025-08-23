@@ -53,7 +53,7 @@ namespace Chat.App.Components.Pages
                     var userName = TokenService.GetClaimValue(jwtToken, "Sub");
                     _userName = userName;
                     _currentUserId = userId;
-                    
+
                     if (!string.IsNullOrEmpty(_receiverUserId) && !string.IsNullOrEmpty(_currentUserId))
                     {
                         Messages = await ChatDataService.GetAllMessages(_currentUserId, _receiverUserId);
@@ -62,7 +62,13 @@ namespace Chat.App.Components.Pages
                     Users = await UserDataService.GetAllUsers();
 
                     _hubConnection = new HubConnectionBuilder()
-                        .WithUrl("https://localhost:7184/chatHub")
+                        .WithUrl("https://localhost:7184/chatHub", options =>
+                        {
+                            options.AccessTokenProvider = async () =>
+                            {
+                                return jwtToken;
+                            };
+                        })
                         .Build();
 
                     _hubConnection.On<string, string>("SendMessage", (senderName, message) =>
@@ -95,21 +101,8 @@ namespace Chat.App.Components.Pages
         {
             if (_hubConnection is not null)
             {
-                var newMessage = new MessageListViewModel
-                {
-                    Content = _message,
-                    SendDate = DateTime.Now,
-                    ReceiverUserId = _receiverUserId,
-                };
-
-                var response = await ChatDataService.PostMessage(newMessage);
-
-                if (response != Guid.Empty)
-                {
-                    _message = string.Empty;
-                    var groupName = string.Join("_", new[] { _currentUserId, _receiverUserId }.OrderBy(id => id));
-                    await _hubConnection.SendAsync("SendMessageToGroup", groupName, _userName, newMessage.Content);
-                }
+                var groupName = string.Join("_", new[] { _currentUserId, _receiverUserId }.OrderBy(id => id));
+                await _hubConnection.SendAsync("SendMessageToGroup", groupName, _userName, _message, _receiverUserId);
             }
         }
 

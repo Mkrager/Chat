@@ -1,11 +1,11 @@
 ﻿using Microsoft.OpenApi.Models;
 using Chat.Application;
 using Chat.Persistence;
-using Chat.Application.ChatHub;
 using Chat.Identity;
 using Chat.Api.Middlewares;
 using Chat.Api.Services;
 using Chat.Application.Contracts;
+using Chat.Api.Hubs;
 
 namespace Chat.Api
 {
@@ -65,7 +65,7 @@ namespace Chat.Api
 
             app.UseCors("Open");
 
-            app.MapHub<ChatHubs>("/chatHub");
+            app.MapHub<NotificationHub>("/chatHub");
 
             app.MapControllers();
 
