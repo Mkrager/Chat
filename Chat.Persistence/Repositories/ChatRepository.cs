@@ -15,9 +15,9 @@ namespace Chat.Persistence.Repositories
         public async Task<List<Message>> ListAllMessages(string userId1, string userId2)
         {
             var messages = await _dbContext.Messages
-                .Where(x => (x.UserId == userId1 && x.ReceiverUserId == userId2) ||
-                            (x.UserId == userId2 && x.ReceiverUserId == userId1))
-                .OrderBy(x => x.SendDate)
+                .Where(x => (x.CreatedBy == userId1 && x.ReceiverId == userId2) ||
+                            (x.CreatedBy == userId2 && x.ReceiverId == userId1))
+                .OrderBy(x => x.CreatedDate)
                 .ToListAsync();
 
             return messages;

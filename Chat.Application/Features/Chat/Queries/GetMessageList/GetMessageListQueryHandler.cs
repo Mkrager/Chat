@@ -15,7 +15,7 @@ namespace Chat.Application.Features.Chat.Queries.GetMessageList
         }
         public async Task<List<MessageListVm>> Handle(GetMessageListQuery request, CancellationToken cancellationToken)
         {
-            var allMessage = (await _chatRepository.ListAllMessages(request.UserId, request.ReceiverUserId)).OrderBy(x => x.SendDate);
+            var allMessage = (await _chatRepository.ListAllMessages(request.UserId, request.ReceiverUserId)).OrderBy(x => x.CreatedDate);
             var messagesDto = _mapper.Map<List<MessageListVm>>(allMessage);
 
             return messagesDto;
