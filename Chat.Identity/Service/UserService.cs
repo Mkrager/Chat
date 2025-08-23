@@ -48,5 +48,19 @@ namespace Chat.Identity.Service
 
             return userDetailsList;
         }
+
+        public async Task<List<GetUserDetailsResponse>> GetUsersByIdsAsync(IEnumerable<string> userIds)
+        {
+            var users = _userManager.Users
+                .Where(u => userIds.Contains(u.Id))
+                .Select(u => new GetUserDetailsResponse()
+                {
+                    UserId = u.Id,
+                    UserName = u.UserName
+                })
+                .ToList();
+
+            return await Task.FromResult(users);
+        }
     }
 }

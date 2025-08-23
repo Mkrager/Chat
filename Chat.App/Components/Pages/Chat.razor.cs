@@ -31,11 +31,10 @@ namespace Chat.App.Components.Pages
 
         private string _receiverUserId = null;
         private string _currentUserId = null;
-        private string _userName = null;
 
         private HubConnection? _hubConnection;
         private string _message = string.Empty;
-        private string jwtToken;
+        private string? jwtToken;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -49,9 +48,8 @@ namespace Chat.App.Components.Pages
                 }
                 else
                 {
+                    Users = await UserDataService.GetAllUsers();
                     var userId = TokenService.GetClaimValue(jwtToken, "uid");
-                    var userName = TokenService.GetClaimValue(jwtToken, "Sub");
-                    _userName = userName;
                     _currentUserId = userId;
 
                     if (!string.IsNullOrEmpty(_receiverUserId) && !string.IsNullOrEmpty(_currentUserId))
@@ -59,7 +57,6 @@ namespace Chat.App.Components.Pages
                         Messages = await ChatDataService.GetAllMessages(_currentUserId, _receiverUserId);
                     }
 
-                    Users = await UserDataService.GetAllUsers();
 
                     _hubConnection = new HubConnectionBuilder()
                         .WithUrl("https://localhost:7184/chatHub", options =>
@@ -75,9 +72,8 @@ namespace Chat.App.Components.Pages
                     {
                         var newMessage = new MessageListViewModel
                         {
-                            SenderUserName = senderName,
                             Content = message,
-                            SendDate = DateTime.Now
+                            SenderUserName = senderName,
                         };
 
                         Messages.Add(newMessage);
@@ -102,7 +98,7 @@ namespace Chat.App.Components.Pages
             if (_hubConnection is not null)
             {
                 var groupName = string.Join("_", new[] { _currentUserId, _receiverUserId }.OrderBy(id => id));
-                await _hubConnection.SendAsync("SendMessageToGroup", groupName, _userName, _message, _receiverUserId);
+                await _hubConnection.SendAsync("SendMessageToGroup", groupName, _message, _receiverUserId);
             }
         }
 
@@ -131,6 +127,5 @@ namespace Chat.App.Components.Pages
             await AuthenticationService.Logout();
             NavigationManager.NavigateTo("/");
         }
-
     }
 }
