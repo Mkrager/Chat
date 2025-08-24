@@ -26,11 +26,7 @@ namespace Chat.Api
 
             builder.Services.AddSignalR();
 
-            builder.Services.AddControllers()
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
+            builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
             {
