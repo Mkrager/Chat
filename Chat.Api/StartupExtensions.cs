@@ -32,7 +32,7 @@ namespace Chat.Api
             {
                 options.AddPolicy("Open", policy =>
                 {
-                    policy.WithOrigins("https://localhost:7079")
+                    policy.WithOrigins("https://localhost:7195")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });

@@ -14,11 +14,12 @@ namespace Chat.App.Controllers
             _chatDataService = chatDataService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Chat()
         {
             var users = await _userDataService.GetAllUsers();
 
-            var messages = await _chatDataService.GetAllMessages();
+            var messages = await _chatDataService.GetAllMessages("");
 
             var chatViewModel = new ChatViewModel()
             {

@@ -18,7 +18,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUserDataService, UserDataService>();
-builder.Services.AddScoped<IChatDataService, ChatDataService>();
+builder.Services.AddScoped<IChatDataService, ChatDataService>(); 
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddControllersWithViews();
 

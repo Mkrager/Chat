@@ -28,7 +28,7 @@ namespace Chat.App.Services
         {
             try
             {
-                var authenticationRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7275/api/Account/authenticate")
+                var authenticationRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/Account/authenticate")
                 {
                     Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
                 };
@@ -103,7 +103,7 @@ namespace Chat.App.Services
         {
             try
             {
-                var registerRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7275/api/account/register")
+                var registerRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/account/register")
                 {
                     Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
                 };
