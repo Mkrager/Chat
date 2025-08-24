@@ -1,0 +1,43 @@
+﻿@model ChatViewModel
+
+@{
+    ViewData["Title"] = "Chat";
+}
+
+<div class="container">
+    <aside>
+        <form asp-controller="Account" asp-action="Logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
+
+        @foreach (var user in Model.Users)
+        {
+            <form asp-controller="Chat" asp-action="OpenChat" method="post" style="margin-top:10px;">
+                <input type="hidden" name="userId" value="@user.UserId" />
+                <button type="submit">@user.UserName</button>
+            </form>
+        }
+    </aside>
+
+    <main>
+        <header><h1>Chat</h1></header>
+
+        <div class="chat">
+            @foreach (var message in Model.Messages)
+            {
+                <div class="message">
+                    <h2>@message.SenderUserName</h2>
+                    <p>@message.Content</p>
+                    <p><small>@message.SendDate.ToString("g")</small></p>
+                </div>
+            }
+        </div>
+
+        <div class="textarea">
+            <form asp-controller="Chat" asp-action="SendMessage" method="post" style="display:flex; gap:10px;">
+                <input type="text" name="message" class="form-input" placeholder="Enter message" style="flex:1;" required />
+                <button type="submit" class="form-btn">Send</button>
+            </form>
+        </div>
+    </main>
+</div>

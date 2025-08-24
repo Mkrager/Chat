@@ -5,9 +5,9 @@ namespace Chat.App.Contracts
 {
     public interface IAuthenticationService
     {
-        Task<ApiResponse<bool>> Authenticate(AuthenticateRequest authenticateRequest);
-        Task<ApiResponse<bool>> Register(RegistrationRequest registrationRequest);
-        Task<string> GetToken();
+        Task<ApiResponse<bool>> Authenticate(AuthenticateRequest request);
+        Task<ApiResponse<bool>> Register(RegistrationRequest request);
         Task Logout();
+        string GetAccessToken();
     }
 }

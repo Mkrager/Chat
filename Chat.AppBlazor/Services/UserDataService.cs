@@ -21,7 +21,7 @@ namespace Chat.App.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7184/api/User");
 
-            var accessToken = _authenticationService.GetAccessToken();
+            var accessToken = await _authenticationService.GetToken();
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 

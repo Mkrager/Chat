@@ -5,24 +5,20 @@ using Microsoft.JSInterop;
 
 namespace Chat.App.Components.Pages
 {
-    public partial class Register
+    public partial class Login
     {
-        public RegistrationRequest RegisterViewModel { get; set; }
+        public AuthenticateRequest AuthenticateRequest { get; set; } = new AuthenticateRequest();
+        public string Message { get; set; }
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private IAuthenticationService AuthenticationService { get; set; }
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
 
-        public string Message { get; set; }
 
-        [Inject]    
-        private IAuthenticationService AuthenticationService { get; set; }
-
-        public Register()
-        {
-            RegisterViewModel = new RegistrationRequest();
-        }
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -41,11 +37,10 @@ namespace Chat.App.Components.Pages
 
         protected async void HandleValidSubmit()
         {
-            var result = await AuthenticationService.Register(RegisterViewModel.FirstName, RegisterViewModel.LastName, RegisterViewModel.UserName, RegisterViewModel.Email, RegisterViewModel.Password);
-
+            var result = await AuthenticationService.Authenticate(AuthenticateRequest);
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                NavigationManager.NavigateTo("/login");
+                NavigationManager.NavigateTo("/chat");
             }
             else
             {

@@ -1,22 +1,23 @@
-﻿using Blazored.LocalStorage;
-using Chat.App.ViewModels;
+﻿using Chat.App.ViewModels;
 using System.Text;
 using System.Text.Json;
-using System.Net;
-using Chat.App.Contracts;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Chat.App.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : Contracts.IAuthenticationService
     {
-        private readonly ILocalStorageService _storageService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public AuthenticationService(ILocalStorageService storageService, HttpClient httpClient)
+        public AuthenticationService(IHttpContextAccessor httpContextAccessor, HttpClient httpClient)
         {
-            _storageService = storageService;
             _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
             _jsonOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
@@ -27,7 +28,7 @@ namespace Chat.App.Services
         {
             try
             {
-                var authenticationRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/Account/authenticate")
+                var authenticationRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7275/api/Account/authenticate")
                 {
                     Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
                 };
@@ -37,46 +38,72 @@ namespace Chat.App.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
+
                     var authenticationResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent, _jsonOptions);
+
 
                     var jwtToken = authenticationResponse?.Token;
 
                     if (!string.IsNullOrEmpty(jwtToken))
                     {
-                        await _storageService.SetItemAsync("access_token", jwtToken);
+                        var handler = new JwtSecurityTokenHandler();
+                        var token = handler.ReadJwtToken(jwtToken);
 
-                        return new ApiResponse<bool>(HttpStatusCode.OK, true);
+                        var claims = token.Claims.ToList();
+
+                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await _httpContextAccessor.HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            principal,
+                            new AuthenticationProperties
+                            {
+                                IsPersistent = true,
+                                ExpiresUtc = DateTime.UtcNow.AddDays(30)
+                            });
+
+                        _httpContextAccessor.HttpContext.Response.Cookies.Append("access_token", jwtToken, new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Secure = true,
+                            SameSite = SameSiteMode.Strict,
+                            Expires = DateTime.UtcNow.AddDays(30)
+                        });
+
+                        return new ApiResponse<bool>(System.Net.HttpStatusCode.OK, true);
                     }
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
+
                 var errorMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(errorContent) ??
                                     new Dictionary<string, string> { { "error", errorContent } };
 
-                return new ApiResponse<bool>(HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
             }
             catch (Exception ex)
             {
-                return new ApiResponse<bool>(HttpStatusCode.BadRequest, false, ex.Message);
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, ex.Message);
             }
         }
 
-
-        public async Task<string> GetToken()
+        public string GetAccessToken()
         {
-            return await _storageService.GetItemAsStringAsync("access_token");
+            return _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
         }
 
-        public async Task Logout()
+        public Task Logout()
         {
-            await _storageService.RemoveItemsAsync(new[] { "access_token" });
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("access_token");
+            return Task.CompletedTask;
         }
 
         public async Task<ApiResponse<bool>> Register(RegistrationRequest request)
         {
             try
             {
-                var registerRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/account/register")
+                var registerRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7275/api/account/register")
                 {
                     Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
                 };
@@ -85,7 +112,7 @@ namespace Chat.App.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return new ApiResponse<bool>(HttpStatusCode.OK, true);
+                    return new ApiResponse<bool>(System.Net.HttpStatusCode.OK, true);
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
@@ -93,11 +120,11 @@ namespace Chat.App.Services
                 var errorMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(errorContent) ??
                                     new Dictionary<string, string> { { "error", errorContent } };
 
-                return new ApiResponse<bool>(HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
             }
             catch (Exception ex)
             {
-                return new ApiResponse<bool>(HttpStatusCode.BadRequest, false, ex.Message);
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, ex.Message);
             }
         }
     }

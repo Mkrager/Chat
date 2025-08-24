@@ -1,30 +1,24 @@
 using Chat.App.Contracts;
 using Chat.App.ViewModels;
 using Microsoft.AspNetCore.Components;
-using Chat.App.Services;
 using Microsoft.JSInterop;
-using Newtonsoft.Json.Linq;
 
 namespace Chat.App.Components.Pages
 {
-    public partial class Login
+    public partial class Register
     {
-        public LoginResponse LoginViewModel { get; set; }
-        public string Message { get; set; }
+        public RegistrationRequest RegistrationRequest { get; set; } = new RegistrationRequest();
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
-
-        [Inject]
-        private IAuthenticationService AuthenticationService { get; set; }
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
 
+        public string Message { get; set; }
 
-        public Login()
-        {
-            LoginViewModel = new LoginResponse();
-        }
+        [Inject]    
+        private IAuthenticationService AuthenticationService { get; set; }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -43,10 +37,11 @@ namespace Chat.App.Components.Pages
 
         protected async void HandleValidSubmit()
         {
-            var result = await AuthenticationService.Authenticate(LoginViewModel.Email, LoginViewModel.Password);
+            var result = await AuthenticationService.Register(RegistrationRequest);
+
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                NavigationManager.NavigateTo("/chat");
+                NavigationManager.NavigateTo("/login");
             }
             else
             {

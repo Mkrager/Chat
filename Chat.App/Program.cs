@@ -1,41 +1,39 @@
-using Blazored.LocalStorage;
-using Chat.App.Components;
 using Chat.App.Contracts;
 using Chat.App.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorPages();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.Name = "auth";
-        options.LoginPath = "/login";
-        options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+        //options.LoginPath = "/account/login";
+        //options.AccessDeniedPath = "/account/denied";
     });
 
-builder.Services.AddAuthorization();
-builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddScoped<IChatDataService, ChatDataService>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IUserDataService, UserDataService>();
-builder.Services.AddScoped<IChatHubService, ChatHubService>();
-builder.Services.AddScoped<TokenService>();
-builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IUserDataService, UserDataService>();
+builder.Services.AddScoped<IChatDataService, ChatDataService>();
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-app.UseStaticFiles();
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseAntiforgery();
 
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 await app.RunAsync();

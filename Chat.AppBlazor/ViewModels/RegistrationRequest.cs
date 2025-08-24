@@ -2,7 +2,7 @@
 
 namespace Chat.App.ViewModels
 {
-    public class RegisterViewModel
+    public class RegistrationRequest
     {
         [Required]
         public string FirstName { get; set; } = string.Empty;

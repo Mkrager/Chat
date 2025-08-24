@@ -20,9 +20,9 @@ namespace Chat.App.Services
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/Chat");
+                var accessToken = await _authenticationService.GetToken();
 
-                var accessToken = _authenticationService.GetAccessToken();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/Chat");
 
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -51,7 +51,7 @@ namespace Chat.App.Services
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7184/api/Chat/{userId1}/{userId2}");
 
-                var accessToken = _authenticationService.GetAccessToken();
+                var accessToken = await _authenticationService.GetToken();
 
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
