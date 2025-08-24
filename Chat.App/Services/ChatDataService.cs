@@ -45,11 +45,11 @@ namespace Chat.App.Services
             }
         }
 
-        public async Task<List<MessageListViewModel>> GetAllMessages(string userId1, string userId2)
+        public async Task<List<MessageListViewModel>> GetAllMessages(string userId)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7184/api/Chat/{userId1}/{userId2}");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7184/api/Chat/{userId}");
 
                 var accessToken = _authenticationService.GetAccessToken();
 

@@ -4,7 +4,7 @@ namespace Chat.App.Contracts
 {
     public interface IChatDataService
     {
-        Task<List<MessageListViewModel>> GetAllMessages(string userId1, string userId2);
+        Task<List<MessageListViewModel>> GetAllMessages(string userId);
         Task<Guid> PostMessage(MessageListViewModel messageListViewModel);
 
     }
