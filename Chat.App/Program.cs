@@ -22,6 +22,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IChatDataService, ChatDataService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserDataService, UserDataService>();
+builder.Services.AddScoped<IChatHubService, ChatHubService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddHttpClient();

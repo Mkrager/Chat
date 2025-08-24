@@ -9,10 +9,10 @@
         <button @onclick="() => Logout()">Logout</button>
         @foreach (var user in Users)
         {
-            @if (user.UserName != _userName)
-            {
+            @* @if (user.UserName != _userName) *@
+            @* { *@
                 <button @onclick="() => OpenChat(user.UserId)">@user.UserName</button>
-            }
+            @* } *@
         }
     </aside>
 
