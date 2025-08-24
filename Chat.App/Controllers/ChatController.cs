@@ -29,5 +29,14 @@ namespace Chat.App.Controllers
 
             return View(chatViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMessages([FromQuery] string userId)
+        {
+            var messages = await _chatDataService.GetAllMessages(userId);
+
+            return Json(messages);
+        }
+
     }
 }
