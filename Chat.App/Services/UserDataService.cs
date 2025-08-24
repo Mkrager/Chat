@@ -9,12 +9,15 @@ namespace Chat.App.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IAuthenticationService _authenticationService;
-
-
+        private readonly JsonSerializerOptions _jsonOptions;
         public UserDataService(HttpClient httpClient, IAuthenticationService authenticationService)
         {
             _httpClient = httpClient;
             _authenticationService = authenticationService;
+            _jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<List<UserViewModel>> GetAllUsers()
@@ -31,7 +34,7 @@ namespace Chat.App.Services
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
 
-                return JsonSerializer.Deserialize<List<UserViewModel>>(responseContent);
+                return JsonSerializer.Deserialize<List<UserViewModel>>(responseContent, _jsonOptions);
             }
 
             return new List<UserViewModel>();

@@ -220,6 +220,43 @@ aside button, aside a {
             border-bottom: 1px solid #333;
         }
 
+.textarea {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+    .textarea form {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .textarea input {
+        flex: 1;
+        min-width: 0;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .textarea button {
+        padding: 15px 20px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+        background: #5e6292;
+        color: #fff;
+        cursor: pointer;
+    }
+
+        .textarea button:hover {
+            background: #444;
+        }
+
+
+
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

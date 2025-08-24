@@ -10,10 +10,16 @@ namespace Chat.App.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IAuthenticationService _authenticationService;
+        private readonly JsonSerializerOptions _jsonOptions;
+
         public ChatDataService(HttpClient httpClient, IAuthenticationService authenticationService)
         {
             _httpClient = httpClient;
             _authenticationService = authenticationService;
+            _jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
         }
 
         public async Task<Guid> PostMessage(MessageListViewModel messageViewModel)
@@ -61,7 +67,7 @@ namespace Chat.App.Services
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
 
-                    return JsonSerializer.Deserialize<List<MessageListViewModel>>(responseContent);
+                    return JsonSerializer.Deserialize<List<MessageListViewModel>>(responseContent, _jsonOptions);
                 }
 
                 return new List<MessageListViewModel>();

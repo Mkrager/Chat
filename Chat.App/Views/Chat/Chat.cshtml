@@ -34,10 +34,11 @@
         </div>
 
         <div class="textarea">
-            <form asp-controller="Chat" asp-action="SendMessage" method="post" style="display:flex; gap:10px;">
-                <input type="text" name="message" class="form-input" placeholder="Enter message" style="flex:1;" required />
-                <button type="submit" class="form-btn">Send</button>
+            <form asp-controller="Chat" asp-action="SendMessage" method="post">
+                <input type="text" name="message" placeholder="Enter message" required />
+                <button type="submit">Send</button>
             </form>
         </div>
+
     </main>
 </div>
