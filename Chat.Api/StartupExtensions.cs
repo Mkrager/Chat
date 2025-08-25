@@ -34,7 +34,8 @@ namespace Chat.Api
                 {
                     policy.WithOrigins("https://localhost:7195")
                     .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                 });
             });
 
@@ -61,7 +62,7 @@ namespace Chat.Api
 
             app.UseCors("Open");
 
-            app.MapHub<NotificationHub>("/chatHub");
+            app.MapHub<NotificationHub>("/hub/chat");
 
             app.MapControllers();
 

@@ -13,7 +13,7 @@
 
         @foreach (var user in Model.Users)
         {
-            <button onclick="getMessages('@user.UserId')">@user.UserName</button>
+            <button onclick="selectUser('@user.UserId')">@user.UserName</button>
         }
     </aside>
 
@@ -24,13 +24,14 @@
         </div>
 
         <div class="textarea">
-            <form asp-controller="Chat" asp-action="SendMessage" method="post">
-                <input type="text" name="message" placeholder="Enter message" required />
-                <button type="submit">Send</button>
-            </form>
+            <input type="text" id="messageInput" placeholder="Enter message" />
+            <button type="button" onclick="sendMessage()">Send</button>
         </div>
-
     </main>
 </div>
 
-<script src="~/js/getMessages.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    window.jwtToken = '@Model.JwtToken';
+</script>
+<script src="~/js/chat.js"></script>

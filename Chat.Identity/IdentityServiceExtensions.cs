@@ -52,6 +52,16 @@ namespace Chat.Identity
 
                     o.Events = new JwtBearerEvents()
                     {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hub/chat"))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        },
                         OnAuthenticationFailed = c =>
                         {
                             c.NoResult();

@@ -8,10 +8,12 @@ namespace Chat.App.Controllers
     {
         private readonly IUserDataService _userDataService;
         private readonly IChatDataService _chatDataService;
-        public ChatController(IUserDataService userDataService, IChatDataService chatDataService)
+        private readonly IAuthenticationService _authenticationService;
+        public ChatController(IUserDataService userDataService, IChatDataService chatDataService, IAuthenticationService authenticationService)
         {
             _userDataService = userDataService;
             _chatDataService = chatDataService;
+            _authenticationService = authenticationService;
         }
 
         [HttpGet]
@@ -24,7 +26,8 @@ namespace Chat.App.Controllers
             var chatViewModel = new ChatViewModel()
             {
                 Messages = messages,
-                Users = users
+                Users = users,
+                JwtToken = _authenticationService.GetAccessToken()
             };
 
             return View(chatViewModel);
