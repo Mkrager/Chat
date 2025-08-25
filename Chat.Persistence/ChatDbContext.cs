@@ -35,6 +35,13 @@ namespace Chat.Persistence
                 CreatedBy = "d385ac98-8c90-4946-9ab3-27f821fd7623",
                 ReceiverId = "6e02e7bd-8f2e-4c25-9696-dad78a1307cb"
             });
+            modelBuilder.Entity<Message>().HasData(new Message
+            {
+                Content = "Second message",
+                Id = Guid.Parse("c99b6971-83a4-4b32-9a72-e7cf83f47c2f"),
+                CreatedBy = "d385ac98-8c90-4946-9ab3-27f821fd7623",
+                ReceiverId = "6e02e7bd-8f2e-4c25-9696-dad78a1307cb"
+            });
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken
             = new CancellationToken())
