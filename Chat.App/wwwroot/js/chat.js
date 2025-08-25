@@ -6,8 +6,9 @@
 
 let currentGroup = null;
 
-connection.on("SendMessage", (message, senderUserName, sendDate) => {
-    addMessageToChat(senderUserName, message, sendDate);
+connection.on("SendMessage", (msg) => {
+    console.log(msg);
+    addMessageToChat(msg.senderUserName, msg.content, msg.createdDate);
 });
 
 connection.on("GroupJoined", groupName => {

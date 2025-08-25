@@ -5,7 +5,7 @@ using Chat.Application.Contracts.Persistance;
 
 namespace Chat.Application.Features.Chat.Commands.PostMessage
 {
-    public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, Guid>
+    public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, PostMessageResponse>
     {
         private readonly IMapper _mapper;
         private readonly IChatRepository _chatRepository;
@@ -16,7 +16,7 @@ namespace Chat.Application.Features.Chat.Commands.PostMessage
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(PostMessageCommand request, CancellationToken cancellationToken)
+        public async Task<PostMessageResponse> Handle(PostMessageCommand request, CancellationToken cancellationToken)
         {
             var validator = new PostMessageCommandValidator();
             var validatorResult = await validator.ValidateAsync(request);
@@ -28,7 +28,7 @@ namespace Chat.Application.Features.Chat.Commands.PostMessage
 
             message = await _chatRepository.AddAsync(message);
 
-            return message.Id;
+            return _mapper.Map<PostMessageResponse>(message);
         }
     }
 }

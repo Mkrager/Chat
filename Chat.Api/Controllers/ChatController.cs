@@ -22,6 +22,7 @@ namespace Chat.Api.Controllers
                 UserId = currentUserService.UserId,
                 ReceiverUserId = ReceiverUserId
             });
+
             return Ok(dtos);
         }
 

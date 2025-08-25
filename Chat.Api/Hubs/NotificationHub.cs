@@ -32,7 +32,7 @@ namespace Chat.Api.Hubs
                 ReceiverId = receiverUserId
             });
 
-            await Clients.Group(groupName).SendAsync("SendMessage", message);
+            await Clients.Group(groupName).SendAsync("SendMessage", result);
         }
     }
 }

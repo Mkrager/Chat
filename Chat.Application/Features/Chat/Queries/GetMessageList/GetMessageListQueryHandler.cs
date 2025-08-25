@@ -32,7 +32,6 @@ namespace Chat.Application.Features.Chat.Queries.GetMessageList
             foreach (var message in messagesDto)
             {
                 message.SenderUserName = users.First(u => u.UserId == message.CreatedBy).UserName;
-                message.ReceiverUserName = users.First(u => u.UserId == message.ReceiverId).UserName;
             }
 
             return messagesDto;

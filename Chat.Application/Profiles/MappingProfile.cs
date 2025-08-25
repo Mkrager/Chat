@@ -10,7 +10,8 @@ namespace Chat.Application.Profiles
         public MappingProfile()
         {
             CreateMap<Message, PostMessageCommand>().ReverseMap();
-            CreateMap<Message, MessageListVm>().ReverseMap();  
+            CreateMap<Message, PostMessageResponse>().ReverseMap();
+            CreateMap<Message, MessageListVm>().ReverseMap();
         }
     }
 }
