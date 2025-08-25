@@ -26,7 +26,7 @@ namespace Chat.Application.Features.Chat.Commands.PostMessage
 
             var message = _mapper.Map<Message>(request);
 
-            message = await _chatRepository.PostMessage(message);
+            message = await _chatRepository.AddAsync(message);
 
             return message.Id;
         }

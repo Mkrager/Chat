@@ -15,6 +15,8 @@ namespace Chat.Persistence
             options.UseSqlServer(configuration.GetConnectionString
             ("ChatConnectionString")));
 
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
+
             services.AddScoped<IChatRepository, ChatRepository>();
 
             return services;

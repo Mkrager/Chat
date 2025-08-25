@@ -4,12 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Persistence.Repositories
 {
-    public class ChatRepository : IChatRepository
+    public class ChatRepository : BaseRepository<Message>, IChatRepository
     {
-        protected readonly ChatDbContext _dbContext;
-        public ChatRepository(ChatDbContext dbContext)
+        public ChatRepository(ChatDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
         public async Task<List<Message>> ListAllMessages(string userId1, string userId2)
@@ -21,13 +19,7 @@ namespace Chat.Persistence.Repositories
                 .ToListAsync();
 
             return messages;
-        }      
-
-        public async Task<Message> PostMessage(Message message)
-        {
-            await _dbContext.Messages.AddAsync(message);
-            await _dbContext.SaveChangesAsync();
-            return message;
         }
+
     }
 }

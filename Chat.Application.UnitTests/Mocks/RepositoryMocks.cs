@@ -22,7 +22,7 @@ namespace Chat.Application.UnitTests.Mocks
                     .OrderBy(x => x.CreatedDate)
                     .ToList());
 
-            mockChatRepository.Setup(repo => repo.PostMessage(It.IsAny<Message>
+            mockChatRepository.Setup(repo => repo.AddAsync(It.IsAny<Message>
                 ())).ReturnsAsync(
                 (Message message) =>
                 {

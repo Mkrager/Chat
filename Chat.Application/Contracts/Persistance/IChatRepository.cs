@@ -2,9 +2,8 @@
 
 namespace Chat.Application.Contracts.Persistance
 {
-    public interface IChatRepository
+    public interface IChatRepository : IAsyncRepository<Message>
     {
-        Task<Message> PostMessage(Message message);
         Task<List<Message>> ListAllMessages(string userId, string receiverUserId);
     }
 }

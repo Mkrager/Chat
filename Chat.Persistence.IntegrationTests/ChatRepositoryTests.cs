@@ -68,7 +68,7 @@ namespace Chat.Persistence.IntegrationTests
                 CreatedDate = DateTime.Now 
             };
 
-            var result = await _repository.PostMessage(message);
+            var result = await _repository.AddAsync(message);
 
             Assert.NotNull(result);
             Assert.Equal("New message", result.Content);
