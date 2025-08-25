@@ -58,9 +58,9 @@ namespace Chat.Identity.Service
                     UserId = u.Id,
                     UserName = u.UserName
                 })
-                .ToList();
+                .ToListAsync();
 
-            return await Task.FromResult(users);
+            return await users;
         }
     }
 }
