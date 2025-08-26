@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Chat.Application.Behaviours;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -11,6 +13,9 @@ namespace Chat.Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             return services;
         }
