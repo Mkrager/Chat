@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Chat.Application.Features.Account.Command.Registration
 {
-    public class RegistrationCommand : IRequest<RegistrationResponse>
+    public class RegistrationCommand : IRequest<string>
     {
         public string UserId { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
