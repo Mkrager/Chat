@@ -7,18 +7,15 @@
 let currentGroup = null;
 
 connection.on("SendMessage", (msg) => {
-    console.log(msg);
     addMessageToChat(msg.senderUserName, msg.content, msg.createdDate);
 });
 
 connection.on("GroupJoined", groupName => {
     currentGroup = groupName;
-    console.log("Joined group:", groupName);
     loadMessages(groupName);
 });
 
 connection.start()
-    .then(() => console.log("SignalR connected"))
     .catch(err => console.error(err));
 
 function joinGroup(groupName) {
@@ -74,3 +71,13 @@ function selectUser(userId) {
     if (currentGroup) leaveGroup(currentGroup);
     joinGroup(userId);
 }
+
+
+const input = document.getElementById("messageInput");
+
+input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
