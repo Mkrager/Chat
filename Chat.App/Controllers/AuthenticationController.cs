@@ -40,5 +40,11 @@ namespace Chat.App.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            _authenticationService.Logout();
+            return View();
+        }
     }
 }

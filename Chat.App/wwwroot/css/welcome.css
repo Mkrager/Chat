@@ -1,0 +1,61 @@
+﻿.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header h2 {
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+    .content aside {
+        width: 250px;
+        background: #5e6292;
+        color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        overflow-y: auto;
+    }
+
+        .content aside a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            background: #525186;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+            .content aside a:hover {
+                background: #444;
+            }
+
+    .content main {
+        flex: 1;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+        .content main h2 {
+            margin-top: 0;
+        }
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+    }
+
+        .content aside {
+            width: 100%;
+        }
+}

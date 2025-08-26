@@ -1,15 +1,29 @@
-﻿<div class="container">
+﻿<head>
+    <link rel="stylesheet" href="~/css/welcome.css" />
+</head>
+
+<div class="container">
     <header>
         <h2>Welcome</h2>
     </header>
-    <aside>
-        <h2>Menu</h2>
-        <a asp-controller="chat" asp-action="chat">Go to chat</a>
-        <a asp-controller="authentication" asp-action="register">Register to account</a>
-        <a asp-controller="authentication" asp-action="login">Login to account</a>
-    </aside>
-    <main>
-        <h2>About chat</h2>
-        <p>A simple chat application that allows you to communicate with friends or colleagues through a convenient and user-friendly interface.</p>
-    </main>
+
+    <div class="content">
+        <aside>
+            <h2>Menu</h2>
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="chat" asp-action="chat">Go to chat</a>
+            }
+            else
+            {
+                <a asp-controller="authentication" asp-action="register">Register to account</a>
+                <a asp-controller="authentication" asp-action="login">Login to account</a>
+            }
+        </aside>
+
+        <main>
+            <h2>About chat</h2>
+            <p>A simple chat application that allows you to communicate with friends or colleagues through a convenient and user-friendly interface.</p>
+        </main>
+    </div>
 </div>

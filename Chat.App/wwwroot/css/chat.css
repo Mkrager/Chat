@@ -1,0 +1,116 @@
+﻿.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    height: 80vh;
+    align-items: stretch;
+}
+
+aside {
+    flex: 0 0 300px;
+    overflow-y: auto;
+    background: #5e6292;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+    aside form button,
+    aside button,
+    aside a {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background: #525186;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        aside form button:hover,
+        aside button:hover,
+        aside a:hover {
+            background: #444;
+        }
+
+main {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+    main header {
+        flex: 0 0 auto;
+    }
+
+.chat {
+    flex: 1;
+    margin-top: 20px;
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+.message {
+    background: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.textarea {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+    .textarea input {
+        flex: 1;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+        background: #5e6292;
+        outline: none;
+        color: #fff;
+    }
+
+    .textarea button {
+        padding: 15px 20px;
+        font-size: 16px;
+        border-radius: 10px;
+        border: none;
+        background: #5e6292;
+        color: #fff;
+        cursor: pointer;
+    }
+
+        .textarea button:hover {
+            background: #444;
+        }
+
+    .textarea input::placeholder {
+        color: white;
+        opacity: 1;
+    }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    aside {
+        width: 100%;
+    }
+}
