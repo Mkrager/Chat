@@ -64,7 +64,7 @@ async function loadMessages(groupName) {
         const messages = await response.json();
         const chatDiv = document.getElementById("chatContainer");
         chatDiv.innerHTML = '';
-        messages.forEach(msg => addMessageToChat(msg.senderUserName, msg.content, msg.sendDate));
+        messages.forEach(msg => addMessageToChat(msg.senderUserName, msg.content, msg.createdDate));
     } catch (err) {
         console.error(err);
     }

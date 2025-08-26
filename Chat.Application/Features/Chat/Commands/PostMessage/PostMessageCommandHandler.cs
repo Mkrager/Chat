@@ -2,6 +2,7 @@
 using Chat.Domain.Entities;
 using MediatR;
 using Chat.Application.Contracts.Persistance;
+using Chat.Application.Contracts.Identity;
 
 namespace Chat.Application.Features.Chat.Commands.PostMessage
 {
@@ -9,26 +10,27 @@ namespace Chat.Application.Features.Chat.Commands.PostMessage
     {
         private readonly IMapper _mapper;
         private readonly IChatRepository _chatRepository;
+        private readonly IUserService _userService;
 
-        public PostMessageCommandHandler(IMapper mapper, IChatRepository chatRepository)
+        public PostMessageCommandHandler(IMapper mapper, IChatRepository chatRepository, IUserService userService)
         {
             _chatRepository = chatRepository;
             _mapper = mapper;
+            _userService = userService;
         }
 
         public async Task<PostMessageResponse> Handle(PostMessageCommand request, CancellationToken cancellationToken)
         {
-            var validator = new PostMessageCommandValidator();
-            var validatorResult = await validator.ValidateAsync(request);
-
-            if (validatorResult.Errors.Count > 0)
-                throw new Exceptions.ValidationException(validatorResult);
-
             var message = _mapper.Map<Message>(request);
 
-            message = await _chatRepository.AddAsync(message);
+            var savedMessage = await _chatRepository.AddAsync(message);
+            var user = await _userService.GetUserDetailsAsync(savedMessage.CreatedBy);
 
-            return _mapper.Map<PostMessageResponse>(message);
+            var response = _mapper.Map<PostMessageResponse>(savedMessage);
+            response.SenderUserName = user.UserName;
+
+            return response;
         }
+
     }
 }
