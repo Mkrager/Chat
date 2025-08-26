@@ -28,7 +28,7 @@ namespace Chat.App.Controllers
 
             if (result.IsSuccess)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Chat", "Chat");
             }
 
             return View(authenticateRequest);
@@ -54,10 +54,10 @@ namespace Chat.App.Controllers
         }
 
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            _authenticationService.Logout();
-            return View();
+            await _authenticationService.Logout();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

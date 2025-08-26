@@ -92,10 +92,10 @@ namespace Chat.App.Services
             return _httpContextAccessor.HttpContext.Request.Cookies["access_token"];
         }
 
-        public Task Logout()
+        public async Task Logout()
         {
+            await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             _httpContextAccessor.HttpContext.Response.Cookies.Delete("access_token");
-            return Task.CompletedTask;
         }
 
         public async Task<ApiResponse<bool>> Register(RegistrationRequest request)
