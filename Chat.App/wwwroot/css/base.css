@@ -11,3 +11,11 @@ body {
     line-height: 1.6;
     font-size: 16px;
 }
+
+.btn-danger {
+    background: #2a2455;
+}
+
+    .btn-danger:hover {
+        background: #1a1835;
+    }

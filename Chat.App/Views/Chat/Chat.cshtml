@@ -7,7 +7,7 @@
 <div class="container">
     <aside>
         <form asp-controller="Account" asp-action="Logout" method="post">
-            <button type="submit">Logout</button>
+            <button type="submit" class="btn-danger">Logout</button>
         </form>
 
         @foreach (var user in Model.Users)

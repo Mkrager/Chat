@@ -17,7 +17,7 @@ namespace Chat.App.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new AuthenticateRequest());
         }
 
         [HttpPost]
