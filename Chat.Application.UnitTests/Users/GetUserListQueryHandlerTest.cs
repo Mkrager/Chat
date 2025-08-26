@@ -3,7 +3,7 @@ using Chat.Application.Features.Users.GetUserList;
 using Chat.Application.UnitTests.Mocks;
 using Moq;
 
-namespace Chat.Application.UnitTests.Account.Queries
+namespace Chat.Application.UnitTests.Users
 {
     public class GetUserListQueryHandlerTest
     {
