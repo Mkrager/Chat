@@ -1,4 +1,5 @@
-﻿using Chat.Application.Contracts.Identity;
+﻿using Chat.Application.Contracts;
+using Chat.Application.Contracts.Identity;
 using Chat.Application.DTOs;
 using Chat.Identity.Models;
 using Microsoft.AspNetCore.Identity;
@@ -9,10 +10,11 @@ namespace Chat.Identity.Service
     public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public UserService(UserManager<ApplicationUser> userManager)
+        private readonly ICurrentUserService _currentUserService;
+        public UserService(UserManager<ApplicationUser> userManager, ICurrentUserService currentUserService)
         {
             _userManager = userManager;
+            _currentUserService = currentUserService;
         }
 
         public async Task<GetUserDetailsResponse> GetUserDetailsAsync(string userId)
@@ -35,7 +37,10 @@ namespace Chat.Identity.Service
 
         public async Task<List<GetUserDetailsResponse>> GetUserListAsync()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var currentUser = _currentUserService.UserId;
+
+            var users = await _userManager.Users
+                .Where(u => u.Id != currentUser).ToListAsync();
 
             var userDetailsList = users.Select(user => new GetUserDetailsResponse
             {
