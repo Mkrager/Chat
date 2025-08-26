@@ -13,10 +13,11 @@ namespace Chat.Application.UnitTests.Chat.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<IChatRepository> _mockChatRepository;
-
+        private readonly Mock<IUserService> _mockUserService;
         public PostMessageCommandTest()
         {
             _mockChatRepository = RepositoryMocks.GetChatRepository();
+            _mockUserService = RepositoryMocks.GetUserService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
@@ -27,7 +28,7 @@ namespace Chat.Application.UnitTests.Chat.Commands
         [Fact]
         public async Task Should_Post_Messages_Successfully()
         {
-            var handler = new PostMessageCommandHandler(_mapper, _mockChatRepository.Object);
+            var handler = new PostMessageCommandHandler(_mapper, _mockChatRepository.Object, _mockUserService.Object);
             var command = new PostMessageCommand
             {
                 Content = "Test4",
@@ -48,5 +49,36 @@ namespace Chat.Application.UnitTests.Chat.Commands
             postedMessages.CreatedBy.ShouldBe(userId);
         }
 
+        [Fact]
+        public async void Validator_ShouldHaveError_WhenEmptyContent()
+        {
+            var validator = new PostMessageCommandValidator();
+            var query = new PostMessageCommand
+            {
+                Content = "",
+                ReceiverId = "1235634645"
+            };
+
+            var result = await validator.ValidateAsync(query);
+
+            Assert.False(result.IsValid);
+            Assert.Contains(result.Errors, f => f.PropertyName == "Content");
+        }
+
+        [Fact]
+        public async void Validator_ShouldHaveError_WhenContentContainsOnlySpace()
+        {
+            var validator = new PostMessageCommandValidator();
+            var query = new PostMessageCommand
+            {
+                Content = " ",
+                ReceiverId = "1235634645"
+            };
+
+            var result = await validator.ValidateAsync(query);
+
+            Assert.False(result.IsValid);
+            Assert.Contains(result.Errors, f => f.PropertyName == "Content");
+        }
     }
 }
