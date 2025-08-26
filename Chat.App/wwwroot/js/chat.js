@@ -70,6 +70,13 @@ async function loadMessages(groupName) {
 function selectUser(userId) {
     if (currentGroup) leaveGroup(currentGroup);
     joinGroup(userId);
+
+    const textarea = document.querySelector('.textarea');
+    if (userId) {
+        textarea.style.display = 'flex';
+    } else {
+        textarea.style.display = 'none';
+    }
 }
 
 
