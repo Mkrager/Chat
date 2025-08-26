@@ -1,5 +1,6 @@
 ﻿using Chat.App.Contracts;
 using Chat.App.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.App.Controllers
@@ -16,8 +17,9 @@ namespace Chat.App.Controllers
             _authenticationService = authenticationService;
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Chat()
+        public async Task<IActionResult> Index()
         {
             var users = await _userDataService.GetAllUsers();
 
@@ -33,6 +35,7 @@ namespace Chat.App.Controllers
             return View(chatViewModel);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetMessages([FromQuery] string userId)
         {

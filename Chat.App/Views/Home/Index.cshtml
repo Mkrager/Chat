@@ -12,7 +12,7 @@
             <h2>Menu</h2>
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                <a asp-controller="chat" asp-action="chat">Go to chat</a>
+                <a asp-controller="chat" asp-action="index">Go to chat</a>
             }
             else
             {

@@ -15,9 +15,14 @@ namespace Chat.App.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? message)
         {
-            return View(new AuthenticateRequest());
+            var model = new AuthenticateRequest();
+
+            if(message != null)
+                model.ErrorMessage = message;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -28,7 +33,7 @@ namespace Chat.App.Controllers
 
             if (result.IsSuccess)
             {
-                return RedirectToAction("Chat", "Chat");
+                return RedirectToAction("Index", "Chat");
             }
 
             return View(authenticateRequest);

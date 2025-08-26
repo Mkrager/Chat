@@ -9,8 +9,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        //options.LoginPath = "/account/login";
-        //options.AccessDeniedPath = "/account/denied";
+        options.LoginPath = "/Authentication/Login";
+        options.Events.OnRedirectToLogin = context =>
+        {
+            var loginUrl = $"{options.LoginPath}?message=Please sign in";
+            context.Response.Redirect(loginUrl);
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddHttpClient();
