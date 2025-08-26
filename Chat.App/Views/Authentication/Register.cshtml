@@ -1,11 +1,19 @@
 ﻿@model RegistrationRequest
 
+<head>
+    <link rel="stylesheet" href="~/css/forms.css" />
+</head>
+
 <div class="container-form">
     <div class="form">
         <h1>Register</h1>
 
         <form asp-controller="Authentication" asp-action="Register" method="post" id="registerForm">
             <div asp-validation-summary="All" class="error-text"></div>
+            @if (Model.ErrorMessage != null)
+            {
+                <p class="error-text">@Model.ErrorMessage</p>
+            }
 
             <div class="form-content">
                 <label asp-for="FirstName">First Name</label>

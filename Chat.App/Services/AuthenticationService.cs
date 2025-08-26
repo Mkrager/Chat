@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Chat.App.Middlewares;
 
 namespace Chat.App.Services
 {
@@ -77,10 +78,8 @@ namespace Chat.App.Services
 
                 var errorContent = await response.Content.ReadAsStringAsync();
 
-                var errorMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(errorContent) ??
-                                    new Dictionary<string, string> { { "error", errorContent } };
-
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
+                var errorMessage = JsonErrorHelper.GetErrorMessage(errorContent);
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessage);
             }
             catch (Exception ex)
             {
@@ -117,10 +116,8 @@ namespace Chat.App.Services
 
                 var errorContent = await response.Content.ReadAsStringAsync();
 
-                var errorMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(errorContent) ??
-                                    new Dictionary<string, string> { { "error", errorContent } };
-
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessages.GetValueOrDefault("error"));
+                var errorMessage = JsonErrorHelper.GetErrorMessage(errorContent);
+                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessage);
             }
             catch (Exception ex)
             {

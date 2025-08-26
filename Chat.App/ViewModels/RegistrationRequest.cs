@@ -15,12 +15,13 @@ namespace Chat.App.ViewModels
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [MinLength(3)]
+        [MinLength(3, ErrorMessage = "UserName must be at least 3 characters long.")]
         public string UserName { get; set; } = string.Empty;
 
         [Required]
-        [MinLength(6)]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Password must contain at least one uppercase letter and one special character.")]
         public string Password { get; set; } = string.Empty;
+        public string ErrorMessage { get; set; } = string.Empty;
     }
 }

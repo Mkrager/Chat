@@ -1,4 +1,5 @@
 ﻿using Chat.App.Contracts;
+using Chat.App.Middlewares;
 using Chat.App.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,21 +24,33 @@ namespace Chat.App.Controllers
         public async Task<IActionResult> Login(AuthenticateRequest authenticateRequest)
         {
             var result = await _authenticationService.Authenticate(authenticateRequest);
+            authenticateRequest.ErrorMessage = HandleErrors.HandleResponse(result, "Success");
 
-            return RedirectToAction("Index", "Home");
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(authenticateRequest);
         }
 
         public IActionResult Register()
         {
-            return View();
+            return View(new RegistrationRequest());
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationRequest registrationRequest)
         {
             var result = await _authenticationService.Register(registrationRequest);
+            registrationRequest.ErrorMessage = HandleErrors.HandleResponse(result, "Success");
 
-            return RedirectToAction("Index", "Home");
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(registrationRequest);
         }
 
         [HttpPost]
