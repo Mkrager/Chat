@@ -1,23 +1,25 @@
-﻿using Chat.Application.Contracts.Identity;
+﻿using AutoMapper;
+using Chat.Application.Contracts.Identity;
 using Chat.Application.DTOs;
 using MediatR;
 
 namespace Chat.Application.Features.Users.GetUserList
 {
-    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, List<GetUserDetailsResponse>>
+    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, List<UserListVm>>
     {
         private readonly IUserService _userService;
-
-        public GetUserListQueryHandler(IUserService userService)
+        private readonly IMapper _mapper;
+        public GetUserListQueryHandler(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
-        public async Task<List<GetUserDetailsResponse>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
+        public async Task<List<UserListVm>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
-            var allUsers = (await _userService.GetUserListAsync()).OrderBy(x => x.UserId);
+            var allUsers = (await _userService.GetUserListAsync()).OrderBy(x => x.UserId).ToList();
 
-            return allUsers.ToList();
+            return _mapper.Map<List<UserListVm>>(allUsers);
         }
     }
 }

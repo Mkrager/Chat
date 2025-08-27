@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Chat.Application.Features.Users.GetUserList
 {
-    public class GetUserListQuery : IRequest<List<GetUserDetailsResponse>>
+    public class GetUserListQuery : IRequest<List<UserListVm>>
     {
     }
 }
