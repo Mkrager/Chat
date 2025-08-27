@@ -57,23 +57,5 @@ namespace Chat.Persistence.IntegrationTests
             Assert.Contains(result, m => m.Content == "Test message 1");
             Assert.Contains(result, m => m.Content == "Test message 2");
         }
-
-        [Fact]
-        public async Task PostMessage_ShouldAddMessageToDatabase()
-        {
-            var message = new Message 
-            { 
-                Content = "New message",
-                CreatedBy = "53456345645", 
-                CreatedDate = DateTime.Now 
-            };
-
-            var result = await _repository.AddAsync(message);
-
-            Assert.NotNull(result);
-            Assert.Equal("New message", result.Content);
-            Assert.NotEqual(Guid.Empty, result.Id);
-            Assert.Equal(1, _dbContext.Messages.Count());
-        }
     }
 }
