@@ -106,7 +106,7 @@ namespace Chat.Api
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Chat Management API",
+                    Title = "Chat API",
 
                 });
             });

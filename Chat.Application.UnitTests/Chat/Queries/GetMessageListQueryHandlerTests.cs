@@ -17,8 +17,8 @@ namespace Chat.Application.UnitTests.Chat.Queries
 
         public GetMessageListQueryHandlerTest()
         {
-            _mockChatRepository = RepositoryMocks.GetChatRepository();
-            _mockUserService = RepositoryMocks.GetUserService();
+            _mockChatRepository = ChatRepositoryMock.GetChatRepository();
+            _mockUserService = UserServiceMock.GetUserService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();

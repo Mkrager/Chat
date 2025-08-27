@@ -14,7 +14,7 @@ namespace Chat.Application.UnitTests.Account.Queries
         private readonly IMapper _mapper;
         public AuthenticationQueryHandlerTest()
         {
-            _mockAuthenticationService = RepositoryMocks.GetAuthenticationService();
+            _mockAuthenticationService = AuthenticationServiceMock.GetAuthenticationService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();

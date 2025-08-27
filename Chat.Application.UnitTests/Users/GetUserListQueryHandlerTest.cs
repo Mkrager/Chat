@@ -11,7 +11,7 @@ namespace Chat.Application.UnitTests.Users
 
         public GetUserListQueryHandlerTest()
         {
-            _mockUserService = RepositoryMocks.GetUserService();
+            _mockUserService = UserServiceMock.GetUserService();
         }
 
         [Fact]

@@ -16,8 +16,8 @@ namespace Chat.Application.UnitTests.Chat.Commands
         private readonly Mock<IUserService> _mockUserService;
         public PostMessageCommandTest()
         {
-            _mockChatRepository = RepositoryMocks.GetChatRepository();
-            _mockUserService = RepositoryMocks.GetUserService();
+            _mockChatRepository = ChatRepositoryMock.GetChatRepository();
+            _mockUserService = UserServiceMock.GetUserService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
