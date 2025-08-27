@@ -5,7 +5,7 @@ This is a simple real-time chat application that allows users to register, log i
 
 ## Technologies Used
 - **Frontend:** 
-  - **Blazor** — for creating interactive web components.
+  - **MVC** — for creating interactive web components.
   - **HTML** — for structuring the pages.
   - **CSS** — for styling the interface.
 
