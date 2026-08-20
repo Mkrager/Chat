@@ -30,14 +30,13 @@ namespace Chat.Application.UnitTests.Account.Commadns
             var command = new RegistrationCommand
             {
                 Email = "newuser@example.com",
-                UserName = "newuser",
+                Username = "newuser",
                 Password = "NewPassword123!",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            Assert.NotNull(result);
-            Assert.False(result.);
+            Assert.NotEqual(Guid.Empty, result);
 
             _mockAuthenticationService.Verify(service => service.RegisterAsync(It.IsAny<RegistrationRequest>()), Times.Once);
         }
@@ -49,10 +48,8 @@ namespace Chat.Application.UnitTests.Account.Commadns
             var query = new RegistrationCommand
             {
                 Email = "",
-                UserName = "newuser",
+                Username = "newuser",
                 Password = "NewPassword123!",
-                FirstName = "New",
-                LastName = "User"
             };
 
             var result = await validator.ValidateAsync(query);

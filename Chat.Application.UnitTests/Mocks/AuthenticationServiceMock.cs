@@ -11,17 +11,16 @@ namespace Chat.Application.UnitTests.Mocks
             var mockAuthService = new Mock<IAuthenticationService>();
 
             mockAuthService.Setup(service => service.RegisterAsync(It.IsAny<RegistrationRequest>()))
-                .ReturnsAsync((RegistrationRequest request) =>
-                    new RegistrationResponse { UserId = Guid.NewGuid().ToString() });
+                .ReturnsAsync((Guid userId) => userId = Guid.NewGuid());
 
             mockAuthService.Setup(service => service.AuthenticateAsync(It.IsAny<AuthenticationRequest>()))
                 .ReturnsAsync((AuthenticationRequest request) =>
                     new AuthenticationResponse
                     {
-                        Id = Guid.NewGuid().ToString(),
+                        Id = Guid.NewGuid(),
                         Token = "mock-jwt-token",
                         Email = request.Email,
-                        UserName = "mockUser"
+                        Username = "mockUser"
                     });
             return mockAuthService;
         }

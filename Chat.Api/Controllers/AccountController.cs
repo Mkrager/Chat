@@ -19,9 +19,14 @@ namespace Chat.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegistrationRequest request)
+        public async Task<ActionResult<Guid>> RegisterAsync(RegistrationRequest request)
         {
-            var dtos = await mediator.Send(new RegistrationCommand() { UserName = request.UserName, Password = request.Password, Email = request.Email, FirstName = request.FirstName, LastName = request.LastName });
+            var dtos = await mediator.Send(new RegistrationCommand() 
+            { 
+                Username = request.Username, 
+                Password = request.Password, 
+                Email = request.Email, 
+            });
             return Ok(dtos);
         }
     }

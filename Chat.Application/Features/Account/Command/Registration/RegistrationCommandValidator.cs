@@ -10,7 +10,7 @@ namespace Chat.Application.Features.Account.Command.Registration
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("Invalid email address.");
 
-            RuleFor(x => x.UserName)
+            RuleFor(x => x.Username)
                 .NotEmpty().WithMessage("Username is required.")
                 .MinimumLength(3).WithMessage("Username must be at least 3 characters long.");
 
