@@ -11,7 +11,7 @@ namespace Chat.Persistence.IntegrationTests
         private readonly ChatDbContext _dbContext;
         private readonly ChatRepository _repository;
         private readonly Mock<ICurrentUserService> _currentUserServiceMock;
-        private readonly string _currentUserId;
+        private readonly Guid _currentUserId;
 
         public ChatRepositoryTests()
         {
@@ -19,7 +19,7 @@ namespace Chat.Persistence.IntegrationTests
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
 
-            _currentUserId = "12300000-0000-0000-0000-000000000000";
+            _currentUserId = Guid.Parse("12300000-0000-0000-0000-000000000000");
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _currentUserServiceMock.Setup(m => m.UserId).Returns(_currentUserId);
 
@@ -37,21 +37,21 @@ namespace Chat.Persistence.IntegrationTests
                     Id = Guid.NewGuid(), 
                     Content = "Test message 1", 
                     CreatedDate = DateTime.Now, 
-                    ReceiverId ="242432423" 
+                    ReceiverId =Guid.Parse("242432423") 
                 },
                 new Message 
                 { 
                     Id = Guid.NewGuid(), 
                     Content = "Test message 2",
                     CreatedDate = DateTime.Now, 
-                    ReceiverId = "242432423"
+                    ReceiverId = Guid.Parse("242432423")
                 }
             };
 
             await _dbContext.Messages.AddRangeAsync(messages);
             await _dbContext.SaveChangesAsync();
 
-            var result = await _repository.ListAllMessages("12300000-0000-0000-0000-000000000000", "242432423");
+            var result = await _repository.ListAllMessages(Guid.Parse("12300000-0000-0000-0000-000000000000"), Guid.Parse("242432423"));
 
             Assert.Equal(2, result.Count);
             Assert.Contains(result, m => m.Content == "Test message 1");

@@ -10,7 +10,7 @@ namespace Chat.Api.Services
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        public string UserId =>
-            _httpContextAccessor.HttpContext.User.FindFirst("uid")?.Value;
+        public Guid UserId =>
+            Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirst("uid")?.Value);
     }
 }

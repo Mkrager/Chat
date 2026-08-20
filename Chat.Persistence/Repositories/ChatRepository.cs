@@ -10,7 +10,7 @@ namespace Chat.Persistence.Repositories
         {
         }
 
-        public async Task<List<Message>> ListAllMessages(string userId1, string userId2)
+        public async Task<List<Message>> ListAllMessages(Guid userId1, Guid userId2)
         {
             var messages = await _dbContext.Messages
                 .Where(x => (x.CreatedBy == userId1 && x.ReceiverId == userId2) ||

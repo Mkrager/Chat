@@ -2,7 +2,7 @@
 {
     public class AuditableEntity : BaseEntity
     {
-        public string? CreatedBy { get; set; }
+        public Guid CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

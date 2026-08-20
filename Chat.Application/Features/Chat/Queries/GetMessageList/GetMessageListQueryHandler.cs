@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Chat.Application.Contracts.Identity;
 using Chat.Application.Contracts.Persistance;
 using MediatR;
 
@@ -9,12 +8,15 @@ namespace Chat.Application.Features.Chat.Queries.GetMessageList
     {
         private readonly IMapper _mapper;
         private readonly IChatRepository _chatRepository;
-        private readonly IUserService _userService;
-        public GetMessageListQueryHandler(IMapper mapper, IChatRepository chatRepository, IUserService userService)
+        private readonly IUserRepository _userRepository;
+        public GetMessageListQueryHandler(
+            IMapper mapper, 
+            IChatRepository chatRepository, 
+            IUserRepository userRepository)
         {
             _chatRepository = chatRepository;
             _mapper = mapper;
-            _userService = userService;
+            _userRepository = userRepository;
         }
         public async Task<List<MessageListVm>> Handle(GetMessageListQuery request, CancellationToken cancellationToken)
         {
@@ -27,11 +29,11 @@ namespace Chat.Application.Features.Chat.Queries.GetMessageList
                 .Distinct()
                 .ToList();
 
-            var users = await _userService.GetUsersByIdsAsync(userIds);
+            var users = await _userRepository.GetUsersByIdsAsync(userIds);
 
             foreach (var message in messagesDto)
             {
-                message.SenderUserName = users.First(u => u.UserId == message.CreatedBy).UserName;
+                message.SenderUserName = users.First(u => u.Id == message.CreatedBy).Username;
             }
 
             return messagesDto;

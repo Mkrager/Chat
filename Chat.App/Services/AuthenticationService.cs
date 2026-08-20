@@ -77,7 +77,6 @@ namespace Chat.App.Services
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
-
                 var errorMessage = JsonErrorHelper.GetErrorMessage(errorContent);
                 return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessage);
             }

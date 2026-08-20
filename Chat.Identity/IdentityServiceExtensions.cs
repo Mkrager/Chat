@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Chat.Identity.Models;
-using Chat.Identity.Service;
 using System.Text;
 using System.Text.Json;
 using Chat.Application.DTOs;
@@ -20,14 +16,7 @@ namespace Chat.Identity
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            services.AddDbContext<ChatIdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ChatIdentityConnectionString"),
-                b => b.MigrationsAssembly(typeof(ChatIdentityDbContext).Assembly.FullName)));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ChatIdentityDbContext>().AddDefaultTokenProviders();
-
-            services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<IAuthenticationService, AuthenticationService>();
 
             services.AddAuthentication(options =>
             {

@@ -11,7 +11,7 @@ namespace Chat.Persistence.IntegrationTests
         private readonly ChatDbContext _dbContext;
         private readonly BaseRepository<Message> _repository;
         private readonly Mock<ICurrentUserService> _currentUserServiceMock;
-        private readonly string _currentUserId;
+        private readonly Guid _currentUserId;
 
         public BaseRepositoryTests()
         {
@@ -19,7 +19,7 @@ namespace Chat.Persistence.IntegrationTests
                 .UseInMemoryDatabase(databaseName: "ChatDb")
                 .Options;
 
-            _currentUserId = "00000000-0000-0000-0000-000000000000";
+            _currentUserId = Guid.Parse("00000000-0000-0000-0000-000000000000");
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _currentUserServiceMock.Setup(m => m.UserId).Returns(_currentUserId);
 

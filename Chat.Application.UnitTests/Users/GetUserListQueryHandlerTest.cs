@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Chat.Application.Contracts.Identity;
+using Chat.Application.Contracts.Persistance;
 using Chat.Application.Features.Users.GetUserList;
 using Chat.Application.Profiles;
 using Chat.Application.UnitTests.Mocks;
@@ -9,7 +10,7 @@ namespace Chat.Application.UnitTests.Users
 {
     public class GetUserListQueryHandlerTest
     {
-        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IUserRepository> _mockUserService;
         private readonly IMapper _mapper;
         public GetUserListQueryHandlerTest()
         {

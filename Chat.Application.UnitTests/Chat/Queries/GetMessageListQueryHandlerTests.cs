@@ -13,12 +13,12 @@ namespace Chat.Application.UnitTests.Chat.Queries
     {
         private readonly IMapper _mapper;
         private readonly Mock<IChatRepository> _mockChatRepository;
-        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IUserRepository> _mockUserRepository;
 
         public GetMessageListQueryHandlerTest()
         {
             _mockChatRepository = ChatRepositoryMock.GetChatRepository();
-            _mockUserService = UserServiceMock.GetUserService();
+            _mockUserRepository = UserServiceMock.GetUserService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
@@ -29,10 +29,10 @@ namespace Chat.Application.UnitTests.Chat.Queries
         [Fact]
         public async Task GetMessagesList_ShouldReturnListOfMessages_WhenInvoked()
         {
-            var handler = new GetMessageListQueryHandler(_mapper, _mockChatRepository.Object, _mockUserService.Object);
+            var handler = new GetMessageListQueryHandler(_mapper, _mockChatRepository.Object, _mockUserRepository.Object);
 
-            string userId = "35b820e5-1cea-47c8-a6a0-cedccfbda4e6";
-            string ReceiverUserId = "d463ee4a-ad5c-4eb7-be35-3f0991bc20ad";
+            var userId = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6");
+            var ReceiverUserId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad");
 
             var result = await handler.Handle(new GetMessageListQuery() 
             { 

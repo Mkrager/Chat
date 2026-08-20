@@ -13,11 +13,11 @@ namespace Chat.Application.UnitTests.Chat.Commands
     {
         private readonly IMapper _mapper;
         private readonly Mock<IChatRepository> _mockChatRepository;
-        private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<IUserRepository> _mockUserRepository;
         public PostMessageCommandTest()
         {
             _mockChatRepository = ChatRepositoryMock.GetChatRepository();
-            _mockUserService = UserServiceMock.GetUserService();
+            _mockUserRepository = UserServiceMock.GetUserService();
             var configurationProvider = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
@@ -28,7 +28,7 @@ namespace Chat.Application.UnitTests.Chat.Commands
         [Fact]
         public async Task Should_Post_Messages_Successfully()
         {
-            var handler = new PostMessageCommandHandler(_mapper, _mockChatRepository.Object, _mockUserService.Object);
+            var handler = new PostMessageCommandHandler(_mapper, _mockChatRepository.Object, _mockUserRepository.Object);
             var command = new PostMessageCommand
             {
                 Content = "Test4",
@@ -37,8 +37,8 @@ namespace Chat.Application.UnitTests.Chat.Commands
 
             await handler.Handle(command, CancellationToken.None);
 
-            string userId = "35b820e5-1cea-47c8-a6a0-cedccfbda4e6";
-            string receiverId = "d463ee4a-ad5c-4eb7-be35-3f0991bc20ad";
+            var userId = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6");
+            var receiverId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad");
 
             var allMessges = await _mockChatRepository.Object.ListAllMessages(userId, receiverId);
             allMessges.Count.ShouldBe(4);

@@ -15,7 +15,7 @@ namespace Chat.Api.Controllers
         [HttpGet("{ReceiverUserId}", Name = "GetAllMessages")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<MessageListVm>>> GetAllMessages(string ReceiverUserId)
+        public async Task<ActionResult<List<MessageListVm>>> GetAllMessages(Guid ReceiverUserId)
         {
             var dtos = await mediator.Send(new GetMessageListQuery()
             {

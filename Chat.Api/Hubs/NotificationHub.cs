@@ -14,7 +14,7 @@ namespace Chat.Api.Hubs
             _mediator = mediator;
             _currentUserService = currentUserService;
         }
-        public async Task JoinGroup(string recieverId)
+        public async Task JoinGroup(Guid recieverId)
         {
             var groupName = GetGroupName(recieverId);
 
@@ -22,7 +22,7 @@ namespace Chat.Api.Hubs
             await Clients.Caller.SendAsync("GroupJoined", recieverId);
         }
 
-        public async Task LeaveGroup(string recieverId)
+        public async Task LeaveGroup(Guid recieverId)
         {
             var groupName = GetGroupName(recieverId);
 
@@ -30,7 +30,7 @@ namespace Chat.Api.Hubs
             await Clients.Caller.SendAsync("GroupLeft", groupName);
         }
 
-        public async Task SendMessageToGroup(string recieverId, string message, string receiverUserId)
+        public async Task SendMessageToGroup(Guid recieverId, string message, string receiverUserId)
         {
             var groupName = GetGroupName(recieverId);
 
@@ -43,7 +43,7 @@ namespace Chat.Api.Hubs
             await Clients.Group(groupName).SendAsync("SendMessage", result);
         }
 
-        private string GetGroupName(string user2Id)
+        private string GetGroupName(Guid user2Id)
         {
             var user1Id = _currentUserService.UserId;
 
