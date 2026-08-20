@@ -1,7 +1,7 @@
 # Real-Time Chat Application
 
 ## Project Description
-This is a simple real-time chat application that allows users to register, log in, and communicate with each other. The project is implemented using ASP.NET Core for the backend, as well as HTML, CSS, and Blazor for the frontend, providing an intuitive interface and high performance.
+This is a simple real-time chat application that allows users to register, log in, and communicate with each other. The project is implemented using ASP.NET Core for the backend, as well as HTML, CSS, and MVC for the frontend, providing an intuitive interface and high performance.
 
 ## Technologies Used
 - **Frontend:** 
