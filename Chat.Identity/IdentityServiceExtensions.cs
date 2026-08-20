@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using Chat.Application.DTOs;
 using Chat.Application.Contracts.Identity;
+using Chat.Identity.Service;
 
 namespace Chat.Identity
 {
@@ -16,7 +17,7 @@ namespace Chat.Identity
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 
-            //services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
 
             services.AddAuthentication(options =>
             {

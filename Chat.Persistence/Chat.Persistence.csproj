@@ -16,4 +16,9 @@
 		<ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>

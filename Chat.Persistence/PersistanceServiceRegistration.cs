@@ -16,8 +16,8 @@ namespace Chat.Persistence
             ("ChatConnectionString")));
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(BaseRepository<>));
-
             services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
