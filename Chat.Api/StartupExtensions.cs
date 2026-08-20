@@ -6,6 +6,7 @@ using Chat.Api.Middlewares;
 using Chat.Api.Services;
 using Chat.Application.Contracts;
 using Chat.Api.Hubs;
+using Chat.Infrastructure;
 
 namespace Chat.Api
 {
@@ -17,6 +18,7 @@ namespace Chat.Api
             AddSwagger(builder.Services);
 
             builder.Services.AddApplicationService();
+            builder.Services.AddInfrastructureServices();
             builder.Services.AddIdentityServices(builder.Configuration);
             builder.Services.AddPersistenceServices(builder.Configuration);
 

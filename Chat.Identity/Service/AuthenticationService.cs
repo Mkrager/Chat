@@ -1,136 +1,95 @@
-﻿//using Chat.Application.Contracts.Identity;
-//using Chat.Application.DTOs;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.Extensions.Options;
-//using Microsoft.IdentityModel.Tokens;
-//using System.IdentityModel.Tokens.Jwt;
-//using System.Security.Claims;
-//using System.Text;
+﻿using Chat.Application.Contracts.Identity;
+using Chat.Application.Contracts.Infrastructure;
+using Chat.Application.Contracts.Persistance;
+using Chat.Application.DTOs;
+using Chat.Domain.Entities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-//namespace Chat.Identity.Service
-//{
-//    public class AuthenticationService : IAuthenticationService
-//    {
-//        private readonly UserManager<ApplicationUser> _userManager;
-//        private readonly SignInManager<ApplicationUser> _signInManager;
-//        private readonly JwtSettings _jwtSettings;
+namespace Chat.Identity.Service
+{
+    public class AuthenticationService : IAuthenticationService
+    {
+        private readonly JwtSettings _jwtSettings;
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasherService _passwordHasherService;
 
 
-//        public AuthenticationService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IOptions<JwtSettings> jwtSettings)
-//        {
-//            _jwtSettings = jwtSettings.Value;
-//            _userManager = userManager;
-//            _signInManager = signInManager;
-//        }
+        public AuthenticationService(
+            IUserRepository userRepository, 
+            IPasswordHasherService passwordHasherService, 
+            IOptions<JwtSettings> jwtSettings)
+        {
+            _jwtSettings = jwtSettings.Value;
+            _userRepository = userRepository;
+            _passwordHasherService = passwordHasherService;
+        }
 
-//        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
-//        {
-//            var user = await _userManager.FindByEmailAsync(request.Email);
+        public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
+        {
+            var user = await _userRepository.GetByEmailAsync(request.Email);
+            if (user == null)
+                throw new Exception("Invalid credentials");
 
-//            if (user == null)
-//            {
-//                throw new UnauthorizedAccessException($"Invalid email or password.");
-//            }
+            if (!_passwordHasherService.Verify(request.Password, user.PasswordHash))
+                throw new Exception("Invalid credentials");
 
-//            var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+            var token = GenerateToken(user);
 
-//            if (!result.Succeeded)
-//            {
-//                throw new UnauthorizedAccessException($"Invalid email or password.");
-//            }
+            return new AuthenticationResponse
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Token = token
+            };
+        }
 
-//            JwtSecurityToken jwtSecurityToken = await GenerateToken(user);
+        public async Task<Guid> RegisterAsync(RegistrationRequest request)
+        {
+            var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
+            if (existingEmail != null)
+                throw new Exception("Email already exists");
 
-//            AuthenticationResponse response = new AuthenticationResponse
-//            {
-//                Id = user.Id,
-//                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
-//                Email = user.Email,
-//                UserName = user.UserName
-//            };
+            var existingUsername = await _userRepository.GetByUsernameAsync(request.Username);
+            if (existingUsername != null)
+                throw new Exception("Username already exists");
 
-//            return response;
-//        }
+            var hashedPassword = _passwordHasherService.Hash(request.Password);
 
-//        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
-//        {
-//            if (string.IsNullOrEmpty(request.Password))
-//            {
-//                throw new Exception("Password cannot be empty.");
-//            }
+            var user = new User
+            {
+                Username = request.Username,
+                Email = request.Email,
+                PasswordHash = hashedPassword,
+            };
 
-//            var existingUser = await _userManager.FindByNameAsync(request.UserName);
+            await _userRepository.AddAsync(user);
 
-//            if (existingUser != null)
-//            {
-//                throw new Exception($"Username '{request.UserName}' already exists.");
-//            }
+            return user.Id;
+        }
 
-//            var user = new ApplicationUser
-//            {
-//                Email = request.Email,
-//                UserName = request.UserName,
-//                EmailConfirmed = true,
-//                FirstName = request.FirstName,
-//                LastName = request.LastName
+        private string GenerateToken(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Username)
+            };
 
-//            };
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                signingCredentials: signingCredentials);
 
-//            var existingEmail = await _userManager.FindByEmailAsync(request.Email);
-
-//            if (existingEmail == null)
-//            {
-//                var result = await _userManager.CreateAsync(user, request.Password);
-
-//                if (result.Succeeded)
-//                {
-//                    return new RegistrationResponse() { UserId = user.Id };
-//                }
-//                else
-//                {
-//                    var errors = result.Errors.Select(e => e.Description).ToList();
-//                    throw new Exception($"{result.Errors}");
-//                }
-//            }
-//            else
-//            {
-//                throw new Exception($"Email {request.Email} already exists.");
-//            }
-//        }
-
-//        private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
-//        {
-//            var userClaims = await _userManager.GetClaimsAsync(user);
-//            var roles = await _userManager.GetRolesAsync(user);
-
-//            var roleClaims = new List<Claim>();
-
-//            for (int i = 0; i < roles.Count; i++)
-//            {
-//                roleClaims.Add(new Claim("roles", roles[i]));
-//            }
-
-//            var claims = new[]
-//            {
-//                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-//                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-//                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-//                new Claim("uid", user.Id)
-//            }
-//            .Union(userClaims)
-//            .Union(roleClaims);
-
-//            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-//            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-//            var jwtSecurityToken = new JwtSecurityToken(
-//                issuer: _jwtSettings.Issuer,
-//                audience: _jwtSettings.Audience,
-//                claims: claims,
-//                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-//                signingCredentials: signingCredentials);
-//            return jwtSecurityToken;
-//        }
-
-//    }
-//}
+            return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+        }
+    }
+}

@@ -1,9 +1,6 @@
-﻿using Chat.Application.Contracts;
-using Chat.Application.Contracts.Persistance;
-using Chat.Application.DTOs;
+﻿using Chat.Application.Contracts.Persistance;
 using Chat.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Chat.Persistence.Repositories
 {
@@ -18,5 +15,16 @@ namespace Chat.Persistence.Repositories
             return await _dbContext.Users
                  .Where(u => userIds.Contains(u.Id)).ToListAsync();
         }
+
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(r => r.Email == email);
+        }
+
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(r => r.Username == username);
+        }
+
     }
 }

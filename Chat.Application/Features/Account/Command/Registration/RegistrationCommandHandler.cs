@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Chat.Application.Features.Account.Command.Registration
 {
-    public class RegistrationCommandHandler : IRequestHandler<RegistrationCommand, string>
+    public class RegistrationCommandHandler : IRequestHandler<RegistrationCommand, Guid>
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IMapper _mapper;
@@ -15,13 +15,13 @@ namespace Chat.Application.Features.Account.Command.Registration
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(RegistrationCommand request, CancellationToken cancellationToken)
         {
             var registerUser = _mapper.Map<RegistrationRequest>(request);
                 
             var register = await _authenticationService.RegisterAsync(registerUser);
 
-            return register.UserId;
+            return register;
         }
     }
 }
