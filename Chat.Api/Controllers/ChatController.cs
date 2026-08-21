@@ -19,7 +19,7 @@ namespace Chat.Api.Controllers
         {
             var dtos = await mediator.Send(new GetMessageListQuery()
             {
-                UserId = currentUserService.UserId,
+                UserId = currentUserService.UserId.Value,
                 ReceiverUserId = ReceiverUserId
             });
 

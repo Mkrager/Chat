@@ -5,18 +5,12 @@ namespace Chat.App.ViewModels
     public class RegistrationRequest
     {
         [Required]
-        public string FirstName { get; set; } = string.Empty;
-
-        [Required]
-        public string LastName { get; set; } = string.Empty;
-
-        [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         [Required]
         [MinLength(3, ErrorMessage = "UserName must be at least 3 characters long.")]
-        public string UserName { get; set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]

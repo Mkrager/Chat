@@ -46,13 +46,22 @@ namespace Chat.Persistence
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken
             = new CancellationToken())
         {
+            foreach (var entry in ChangeTracker.Entries<User>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedDate = DateTime.Now;
+                        break;
+                }
+            }
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.Now;
-                        entry.Entity.CreatedBy = _currentUserService.UserId;
+                        entry.Entity.CreatedBy = _currentUserService.UserId.Value;
                         break;
                 }
             }

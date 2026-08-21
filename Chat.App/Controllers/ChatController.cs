@@ -23,7 +23,7 @@ namespace Chat.App.Controllers
         {
             var users = await _userDataService.GetAllUsers();
 
-            var messages = await _chatDataService.GetAllMessages("");
+            var messages = await _chatDataService.GetAllMessages(Guid.Empty);
 
             var chatViewModel = new ChatViewModel()
             {
@@ -37,7 +37,7 @@ namespace Chat.App.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetMessages([FromQuery] string userId)
+        public async Task<IActionResult> GetMessages([FromQuery] Guid userId)
         {
             var messages = await _chatDataService.GetAllMessages(userId);
 

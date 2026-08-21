@@ -5,8 +5,7 @@
         public Guid Id { get; set; }
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
-        public string UserId { get; set; } = string.Empty;
-        public string ReceiverUserId { get; set; } = string.Empty;
-        public string SenderUserName { get; set; } = string.Empty;
+        public Guid ReceiverUserId { get; set; }
+        public string SenderUsername { get; set; } = string.Empty;
     }
 }

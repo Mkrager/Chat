@@ -51,7 +51,7 @@ namespace Chat.App.Services
             }
         }
 
-        public async Task<List<MessageListViewModel>> GetAllMessages(string userId)
+        public async Task<List<MessageListViewModel>> GetAllMessages(Guid userId)
         {
             try
             {
