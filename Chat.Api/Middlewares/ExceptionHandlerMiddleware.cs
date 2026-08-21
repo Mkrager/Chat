@@ -21,6 +21,7 @@ namespace Chat.Api.Middlewares
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 await ConvertException(context, ex);
             }
         }

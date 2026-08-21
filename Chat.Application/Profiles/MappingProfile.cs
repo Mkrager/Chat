@@ -17,7 +17,7 @@ namespace Chat.Application.Profiles
             CreateMap<Message, PostMessageResponse>().ReverseMap();
             CreateMap<Message, MessageListVm>().ReverseMap();
 
-            CreateMap<GetUserDetailsResponse, UserListVm>().ReverseMap();
+            CreateMap<User, UserListVm>().ReverseMap();
 
             CreateMap<RegistrationRequest, RegistrationCommand>().ReverseMap();
 

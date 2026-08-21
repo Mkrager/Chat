@@ -1,5 +1,4 @@
-﻿using Chat.Application.DTOs;
-using Chat.Application.Features.Users.GetUserList;
+﻿using Chat.Application.Features.Users.GetUserList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace Chat.Api.Controllers
         [HttpGet(Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<GetUserDetailsResponse>>> GetAllUsers()
+        public async Task<ActionResult<List<UserListVm>>> GetAllUsers()
         {
             var dtos = await mediator.Send(new GetUserListQuery());
             return Ok(dtos);

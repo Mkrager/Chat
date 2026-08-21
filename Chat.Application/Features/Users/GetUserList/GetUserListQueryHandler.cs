@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Chat.Application.Contracts.Identity;
 using Chat.Application.Contracts.Persistance;
-using Chat.Application.DTOs;
 using MediatR;
 
 namespace Chat.Application.Features.Users.GetUserList
