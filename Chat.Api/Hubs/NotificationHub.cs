@@ -43,11 +43,11 @@ namespace Chat.Api.Hubs
             await Clients.Group(groupName).SendAsync("SendMessage", result);
         }
 
-        private string GetGroupName(Guid user2Id)
+        private string GetGroupName(Guid recieverId)
         {
-            var user1Id = _currentUserService.UserId;
+            var senderId = _currentUserService.UserId;
 
-            var ordered = new[] { user1Id, user2Id }.OrderBy(x => x).ToArray();
+            var ordered = new[] { senderId, recieverId }.OrderBy(x => x).ToArray();
             return $"chat_{ordered[0]}_{ordered[1]}";
         }
     }

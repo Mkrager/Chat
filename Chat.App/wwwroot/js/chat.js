@@ -19,7 +19,9 @@ connection.start()
     .catch(err => console.error(err));
 
 function joinGroup(groupName) {
-    connection.invoke("JoinGroup", groupName)
+    connection.invoke("JoinGroup", groupName => {
+        console.log(groupName);
+    })
         .catch(err => console.error(err));
 }
 
