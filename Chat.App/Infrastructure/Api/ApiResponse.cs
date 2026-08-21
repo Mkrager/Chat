@@ -1,13 +1,13 @@
 ﻿using System.Net;
 
-namespace Chat.App.Services
+namespace Chat.App.Infrastructure.Api
 {
     public class ApiResponse<T>
     {
         public HttpStatusCode StatusCode { get; set; }
         public T? Data { get; set; }
         public string? ErrorText { get; set; }
-        public bool IsSuccess => StatusCode == HttpStatusCode.OK;
+        public bool IsSuccess => ((int)StatusCode >= 200 && (int)StatusCode <= 299);
 
         public ApiResponse(HttpStatusCode statusCode, T? data = default, string? errorText = null)
         {
@@ -21,7 +21,7 @@ namespace Chat.App.Services
     {
         public HttpStatusCode StatusCode { get; set; }
         public string? ErrorText { get; set; }
-        public bool IsSuccess => StatusCode == HttpStatusCode.OK;
+        public bool IsSuccess => ((int)StatusCode >= 200 && (int)StatusCode <= 299);
 
         public ApiResponse(HttpStatusCode statusCode, string? errorText = null)
         {

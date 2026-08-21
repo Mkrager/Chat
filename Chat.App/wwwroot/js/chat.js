@@ -46,7 +46,6 @@ async function startConnection() {
     catch (err) {
         console.error("SignalR connection error:", err);
 
-        // Спробувати підключитися знову через 5 секунд
         setTimeout(startConnection, 5000);
     }
 }
@@ -158,9 +157,11 @@ async function loadMessages(receiverId) {
         const chatDiv = document.getElementById("chatContainer");
         chatDiv.innerHTML = "";
 
+        console.log(messages);
+
         messages.forEach(msg => {
             addMessageToChat(
-                msg.senderUserName,
+                msg.senderUsername,
                 msg.content,
                 msg.createdDate
             );

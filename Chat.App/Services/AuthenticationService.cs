@@ -5,85 +5,63 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Chat.App.Middlewares;
+using Chat.App.Infrastructure.BaseServices;
+using Chat.App.Infrastructure.Api;
 
 namespace Chat.App.Services
 {
-    public class AuthenticationService : Contracts.IAuthenticationService
+    public class AuthenticationService : BaseDataService, Contracts.IAuthenticationService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly HttpClient _httpClient;
-        private readonly JsonSerializerOptions _jsonOptions;
 
-        public AuthenticationService(IHttpContextAccessor httpContextAccessor, HttpClient httpClient)
+        public AuthenticationService(
+            IHttpClientFactory httpClientFactory, 
+            IHttpContextAccessor httpContextAccessor) : base(httpClientFactory)
         {
-            _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
-            _jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
         }
 
-        public async Task<ApiResponse<bool>> Authenticate(AuthenticateRequest request)
+        public async Task<ApiResponse> Authenticate(AuthenticateRequest request)
         {
-            try
-            {
-                var authenticationRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/Account/authenticate")
+            var content = new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await _httpClient.PostAsync("account/authenticate", content);
+
+            var apiResponse = await HandleResponse<LoginResponse>(response);
+
+            if (!apiResponse.IsSuccess || apiResponse.Data == null || string.IsNullOrEmpty(apiResponse.Data.Token))
+                return new ApiResponse(apiResponse.StatusCode, apiResponse.ErrorText ?? "Authentication failed");
+
+            var jwtToken = apiResponse.Data.Token;
+
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(jwtToken);
+
+            var claims = token.Claims.ToList();
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await _httpContextAccessor.HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties
                 {
-                    Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
-                };
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddDays(30)
+                });
 
-                var response = await _httpClient.SendAsync(authenticationRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-
-                    var authenticationResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent, _jsonOptions);
-
-
-                    var jwtToken = authenticationResponse?.Token;
-
-                    if (!string.IsNullOrEmpty(jwtToken))
-                    {
-                        var handler = new JwtSecurityTokenHandler();
-                        var token = handler.ReadJwtToken(jwtToken);
-
-                        var claims = token.Claims.ToList();
-
-                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        var principal = new ClaimsPrincipal(identity);
-
-                        await _httpContextAccessor.HttpContext.SignInAsync(
-                            CookieAuthenticationDefaults.AuthenticationScheme,
-                            principal,
-                            new AuthenticationProperties
-                            {
-                                IsPersistent = true,
-                                ExpiresUtc = DateTime.UtcNow.AddDays(30)
-                            });
-
-                        _httpContextAccessor.HttpContext.Response.Cookies.Append("access_token", jwtToken, new CookieOptions
-                        {
-                            HttpOnly = true,
-                            Secure = true,
-                            SameSite = SameSiteMode.Strict,
-                            Expires = DateTime.UtcNow.AddDays(30)
-                        });
-
-                        return new ApiResponse<bool>(System.Net.HttpStatusCode.OK, true);
-                    }
-                }
-
-                var errorContent = await response.Content.ReadAsStringAsync();
-                var errorMessage = JsonErrorHelper.GetErrorMessage(errorContent);
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessage);
-            }
-            catch (Exception ex)
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("access_token", jwtToken, new CookieOptions
             {
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, ex.Message);
-            }
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(30)
+            });
+
+            return new ApiResponse(System.Net.HttpStatusCode.OK);
         }
 
         public string GetAccessToken()
@@ -97,31 +75,15 @@ namespace Chat.App.Services
             _httpContextAccessor.HttpContext.Response.Cookies.Delete("access_token");
         }
 
-        public async Task<ApiResponse<bool>> Register(RegistrationRequest request)
+        public async Task<ApiResponse> Register(RegistrationRequest request)
         {
-            try
-            {
-                var registerRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7184/api/account/register")
-                {
-                    Content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json")
-                };
+            var content = new StringContent(
+                JsonSerializer.Serialize(request),
+                Encoding.UTF8,
+                "application/json");
 
-                var response = await _httpClient.SendAsync(registerRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return new ApiResponse<bool>(System.Net.HttpStatusCode.OK, true);
-                }
-
-                var errorContent = await response.Content.ReadAsStringAsync();
-
-                var errorMessage = JsonErrorHelper.GetErrorMessage(errorContent);
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, errorMessage);
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<bool>(System.Net.HttpStatusCode.BadRequest, false, ex.Message);
-            }
+            var response = await _httpClient.PostAsync("account/register", content);
+            return await HandleResponse(response);
         }
     }
 }

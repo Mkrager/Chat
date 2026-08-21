@@ -27,8 +27,8 @@ namespace Chat.App.Controllers
 
             var chatViewModel = new ChatViewModel()
             {
-                Messages = messages,
-                Users = users,
+                Messages = messages.Data,
+                Users = users.Data,
                 JwtToken = _authenticationService.GetAccessToken()
             };
 
@@ -41,7 +41,7 @@ namespace Chat.App.Controllers
         {
             var messages = await _chatDataService.GetAllMessages(userId);
 
-            return Json(messages);
+            return Json(messages.Data);
         }
 
     }

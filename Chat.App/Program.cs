@@ -1,4 +1,5 @@
 using Chat.App.Contracts;
+using Chat.App.Infrastructure.HttpHandlers;
 using Chat.App.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -25,6 +26,17 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserDataService, UserDataService>();
 builder.Services.AddScoped<IChatDataService, ChatDataService>(); 
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+
+builder.Services.AddTransient<AuthHeaderHandler>();
+
+var baseUrl = builder.Configuration["App:BaseUrl"];
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(baseUrl);
+})
+.AddHttpMessageHandler<AuthHeaderHandler>();
+
 
 builder.Services.AddControllersWithViews();
 

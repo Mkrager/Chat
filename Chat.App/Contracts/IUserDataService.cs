@@ -1,9 +1,10 @@
-﻿using Chat.App.ViewModels;
+﻿using Chat.App.Infrastructure.Api;
+using Chat.App.ViewModels;
 
 namespace Chat.App.Contracts
 {
     public interface IUserDataService
     {
-        Task<List<UserViewModel>> GetAllUsers();
+        Task<ApiResponse<List<UserViewModel>>> GetAllUsers();
     }
 }

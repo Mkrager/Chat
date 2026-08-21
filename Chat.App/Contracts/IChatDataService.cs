@@ -1,11 +1,12 @@
-﻿using Chat.App.ViewModels;
+﻿using Chat.App.Infrastructure.Api;
+using Chat.App.ViewModels;
 
 namespace Chat.App.Contracts
 {
     public interface IChatDataService
     {
-        Task<List<MessageListViewModel>> GetAllMessages(Guid userId);
-        Task<Guid> PostMessage(MessageListViewModel messageListViewModel);
+        Task<ApiResponse<List<MessageListViewModel>>> GetAllMessages(Guid userId);
+        Task<ApiResponse<Guid>> PostMessage(MessageListViewModel messageListViewModel);
 
     }
 }

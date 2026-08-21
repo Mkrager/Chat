@@ -1,4 +1,4 @@
-﻿using Chat.App.Services;
+﻿using Chat.App.Infrastructure.Api;
 
 namespace Chat.App.Middlewares
 {
