@@ -7,11 +7,6 @@
 let currentGroup = null;
 let currentReceiverId = null;
 
-
-// =========================
-// SignalR events
-// =========================
-
 connection.on("SendMessage", (msg) => {
     addMessageToChat(
         msg.senderUserName,
@@ -32,11 +27,6 @@ connection.on("GroupLeft", (groupName) => {
     console.log("Left group:", groupName);
 });
 
-
-// =========================
-// SignalR connection
-// =========================
-
 async function startConnection() {
     try {
         await connection.start();
@@ -51,11 +41,6 @@ async function startConnection() {
 }
 
 startConnection();
-
-
-// =========================
-// Groups
-// =========================
 
 async function joinGroup(receiverId) {
     if (connection.state !== signalR.HubConnectionState.Connected) {
@@ -84,11 +69,6 @@ async function leaveGroup(receiverId) {
     }
 }
 
-
-// =========================
-// Send message
-// =========================
-
 async function sendMessage() {
     const input = document.getElementById("messageInput");
     const message = input.value.trim();
@@ -116,11 +96,6 @@ async function sendMessage() {
         console.error("SendMessageToGroup error:", err);
     }
 }
-
-
-// =========================
-// Messages
-// =========================
 
 function addMessageToChat(sender, content, sendDate) {
     const chatDiv = document.getElementById("chatContainer");
@@ -172,42 +147,28 @@ async function loadMessages(receiverId) {
     }
 }
 
-
-// =========================
-// User selection
-// =========================
-
 async function selectUser(userId) {
 
     if (!userId) {
         return;
     }
 
-    // Якщо вже були в іншій групі
     if (currentReceiverId) {
         await leaveGroup(currentReceiverId);
     }
 
-    // Запам'ятовуємо ID співрозмовника
     currentReceiverId = userId;
 
     console.log("Selected user:", userId);
 
-    // Приєднуємося до групи
     await joinGroup(userId);
 
-    // Показуємо поле вводу
     const textarea = document.querySelector(".textarea");
 
     if (textarea) {
         textarea.style.display = "flex";
     }
 }
-
-
-// =========================
-// Enter -> send message
-// =========================
 
 const input = document.getElementById("messageInput");
 
