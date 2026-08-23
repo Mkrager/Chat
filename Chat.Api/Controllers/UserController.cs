@@ -1,4 +1,4 @@
-﻿using Chat.Application.Features.Users.GetUserList;
+﻿using Chat.Application.Features.Users.Queris;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
