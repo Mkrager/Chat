@@ -17,14 +17,12 @@
         String.fromCharCode(...new Uint8Array(publicKey))
     );
 
-    const response = await fetch("/api/users/public-key", {
-        method: "POST",
+    const response = await fetch("/user/public-key", {
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            publicKey: publicKeyBase64
-        })
+        body: JSON.stringify(publicKeyBase64)
     });
 
     if (!response.ok) {

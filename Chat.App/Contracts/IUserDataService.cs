@@ -6,5 +6,6 @@ namespace Chat.App.Contracts
     public interface IUserDataService
     {
         Task<ApiResponse<List<UserViewModel>>> GetAllUsers();
+        Task<ApiResponse> SavePublicKey(string publicKey);
     }
 }

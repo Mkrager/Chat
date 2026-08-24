@@ -19,6 +19,9 @@ namespace Chat.Application.Features.Users.Commands
             if (user == null)
                 throw new NotFoundException(nameof(User), request.UserId);
 
+            if (user.PublicKey != null)
+                return Unit.Value;
+
             await _userRepository.SavePublicKey(user, request.PublicKey);
 
             return Unit.Value;

@@ -21,6 +21,7 @@ namespace Chat.Api.Controllers
             return Ok(dtos);
         }
 
+        [Authorize]
         [HttpPatch("public-key", Name = "SavePublicKey")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
