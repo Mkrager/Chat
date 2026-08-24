@@ -1,12 +1,23 @@
 ﻿async function generateAndSavePublicKey() {
+
+    const existingPrivateKey = await getPrivateKey();
+
+    if (existingPrivateKey) {
+        console.log("Key pair already exists.");
+
+        return existingPrivateKey;
+    }
+
     const keyPair = await crypto.subtle.generateKey(
         {
             name: "ECDH",
             namedCurve: "P-256"
         },
-        true,
+        false,
         ["deriveKey", "deriveBits"]
     );
+
+    await savePrivateKey(keyPair.privateKey);
 
     const publicKey = await crypto.subtle.exportKey(
         "raw",
@@ -29,8 +40,8 @@
         throw new Error("Failed to save the public key.");
     }
 
-    console.log("Public key successfully saved.");
-    
+    console.log("Key pair successfully created.");
+
     return keyPair;
 }
 
