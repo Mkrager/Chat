@@ -17,7 +17,7 @@ namespace Chat.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<List<MessageListVm>>> GetAllMessages(Guid ReceiverUserId)
         {
-            var dtos = await mediator.Send(new GetMessageListQuery()
+            var dtos = await mediator.Send(new GetMessagesListQuery()
             {
                 UserId = currentUserService.UserId.Value,
                 ReceiverUserId = ReceiverUserId
