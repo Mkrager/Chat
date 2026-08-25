@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Chat.Application.Features.Users.Commands
+namespace Chat.Application.Features.Users.Commands.SavePublicKey
 {
     public class SavePublicKeyCommand : IRequest
     {

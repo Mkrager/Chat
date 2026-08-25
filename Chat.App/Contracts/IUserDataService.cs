@@ -7,5 +7,6 @@ namespace Chat.App.Contracts
     {
         Task<ApiResponse<List<UserViewModel>>> GetAllUsers();
         Task<ApiResponse> SavePublicKey(string publicKey);
+        Task<ApiResponse<string>> GetPublicKeyByUserId(Guid userId);
     }
 }

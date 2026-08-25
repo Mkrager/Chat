@@ -2,7 +2,7 @@
 using Chat.Application.Contracts.Persistance;
 using MediatR;
 
-namespace Chat.Application.Features.Users.Queris
+namespace Chat.Application.Features.Users.Queries.GetUserList
 {
     public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, List<UserListVm>>
     {

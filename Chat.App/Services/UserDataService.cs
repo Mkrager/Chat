@@ -19,6 +19,12 @@ namespace Chat.App.Services
             return await HandleResponse<List<UserViewModel>>(response);
         }
 
+        public async Task<ApiResponse<string>> GetPublicKeyByUserId(Guid userId)
+        {
+            var response = await _httpClient.GetAsync($"user/{userId}/public-key");
+            return await HandleResponse<string>(response);
+        }
+
         public async Task<ApiResponse> SavePublicKey(string publicKey)
         {
             var content = new StringContent(

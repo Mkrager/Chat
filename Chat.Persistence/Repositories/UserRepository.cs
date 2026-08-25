@@ -31,5 +31,13 @@ namespace Chat.Persistence.Repositories
             user.PublicKey = publicKey;
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<string> GetPublicKeyByUserId(Guid userId)
+        {
+            return await _dbContext.Users
+                .Where(x => x.Id == userId)
+                .Select(x => x.PublicKey)
+                .FirstOrDefaultAsync();
+        }
     }
 }

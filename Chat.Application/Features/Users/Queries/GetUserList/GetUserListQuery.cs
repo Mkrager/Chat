@@ -1,7 +1,7 @@
 ﻿using Chat.Application.DTOs;
 using MediatR;
 
-namespace Chat.Application.Features.Users.Queris
+namespace Chat.Application.Features.Users.Queries.GetUserList
 {
     public class GetUserListQuery : IRequest<List<UserListVm>>
     {

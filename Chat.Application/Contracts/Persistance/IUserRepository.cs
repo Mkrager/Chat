@@ -8,5 +8,6 @@ namespace Chat.Application.Contracts.Persistance
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByUsernameAsync(string username);
         Task SavePublicKey(User user, string publicKey);
+        Task<string> GetPublicKeyByUserId(Guid userId);
     }
 }

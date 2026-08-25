@@ -1,4 +1,4 @@
-﻿namespace Chat.Application.Features.Users.Queris
+﻿namespace Chat.Application.Features.Users.Queries.GetUserList
 {
     public class UserListVm
     {
