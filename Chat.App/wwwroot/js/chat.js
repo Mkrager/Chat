@@ -6,144 +6,283 @@
 
 let currentGroup = null;
 let currentReceiverId = null;
+let currentSharedKey = null;
 
-connection.on("SendMessage", (msg) => {
-    addMessageToChat(
-        msg.senderUserName,
-        msg.content,
-        msg.createdDate
-    );
+connection.on("SendMessage", async (msg) => {
+    try {
+
+        const decryptedMessage = await decryptMessage(
+            msg.ciphertext,
+            msg.iv,
+            currentSharedKey
+        );
+
+        console.log("Decrypted:", decryptedMessage);
+
+        addMessageToChat(
+            msg.senderUserName,
+            decryptedMessage,
+            msg.createdDate
+        );
+
+    }
+    catch (err) {
+
+        console.error(
+            "Message decryption error:",
+            err
+        );
+    }
 });
 
 connection.on("GroupJoined", (groupName) => {
-    console.log("Joined group:", groupName);
+
+    console.log(
+        "Joined group:",
+        groupName
+    );
 
     currentGroup = groupName;
 
     loadMessages(currentReceiverId);
 });
 
+
 connection.on("GroupLeft", (groupName) => {
-    console.log("Left group:", groupName);
+
+    console.log(
+        "Left group:",
+        groupName
+    );
 });
 
 async function startConnection() {
+
     try {
+
         await connection.start();
 
-        console.log("SignalR connected");
+        console.log(
+            "SignalR connected"
+        );
+
     }
     catch (err) {
-        console.error("SignalR connection error:", err);
 
-        setTimeout(startConnection, 5000);
+        console.error(
+            "SignalR connection error:",
+            err
+        );
+
+        setTimeout(
+            startConnection,
+            5000
+        );
     }
 }
 
 startConnection();
 
 async function joinGroup(receiverId) {
-    if (connection.state !== signalR.HubConnectionState.Connected) {
-        console.log("SignalR is not connected");
+
+    if (
+        connection.state !==
+        signalR.HubConnectionState.Connected
+    ) {
+
+        console.log(
+            "SignalR is not connected"
+        );
+
         return;
     }
 
     try {
-        await connection.invoke("JoinGroup", receiverId);
+
+        await connection.invoke(
+            "JoinGroup",
+            receiverId
+        );
+
     }
     catch (err) {
-        console.error("JoinGroup error:", err);
+
+        console.error(
+            "JoinGroup error:",
+            err
+        );
     }
 }
 
 async function leaveGroup(receiverId) {
-    if (connection.state !== signalR.HubConnectionState.Connected) {
+
+    if (
+        connection.state !==
+        signalR.HubConnectionState.Connected
+    ) {
         return;
     }
 
     try {
-        await connection.invoke("LeaveGroup", receiverId);
+
+        await connection.invoke(
+            "LeaveGroup",
+            receiverId
+        );
+
     }
     catch (err) {
-        console.error("LeaveGroup error:", err);
+
+        console.error(
+            "LeaveGroup error:",
+            err
+        );
     }
 }
 
 async function sendMessage() {
-    const input = document.getElementById("messageInput");
-    const message = input.value.trim();
 
-    if (!message || !currentReceiverId) {
+    const input =
+        document.getElementById(
+            "messageInput"
+        );
+
+    const message =
+        input.value.trim();
+
+    if (
+        !message ||
+        !currentReceiverId
+    ) {
         return;
     }
 
-    if (connection.state !== signalR.HubConnectionState.Connected) {
-        console.log("SignalR is not connected");
+    if (!currentSharedKey) {
+
+        console.error(
+            "Shared key is not available."
+        );
+
+        return;
+    }
+
+    if (
+        connection.state !==
+        signalR.HubConnectionState.Connected
+    ) {
+
+        console.log(
+            "SignalR is not connected"
+        );
+
         return;
     }
 
     try {
+        const encrypted =
+            await encryptMessage(
+                message,
+                currentSharedKey
+            );
+
+        console.log(
+            "Encrypted message:",
+            encrypted
+        );
+
         await connection.invoke(
             "SendMessageToGroup",
             currentReceiverId,
-            message,
-            currentReceiverId
+            encrypted.ciphertext,
+            encrypted.iv
         );
 
         input.value = "";
+
     }
     catch (err) {
-        console.error("SendMessageToGroup error:", err);
+
+        console.error(
+            "SendMessageToGroup error:",
+            err
+        );
     }
-}
-
-function addMessageToChat(sender, content, sendDate) {
-    const chatDiv = document.getElementById("chatContainer");
-
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("message");
-
-    messageDiv.innerHTML = `
-        <h2>${sender}</h2>
-        <p>${content}</p>
-        <p>
-            <small>
-                ${new Date(sendDate).toLocaleString()}
-            </small>
-        </p>
-    `;
-
-    chatDiv.appendChild(messageDiv);
-    chatDiv.scrollTop = chatDiv.scrollHeight;
 }
 
 async function loadMessages(receiverId) {
+
     try {
-        const response = await fetch(
-            `/Chat/GetMessages?userId=${encodeURIComponent(receiverId)}`
-        );
+
+        const response =
+            await fetch(
+                `/Chat/GetMessages?userId=${encodeURIComponent(receiverId)}`
+            );
 
         if (!response.ok) {
-            throw new Error("Failed to load messages");
+
+            throw new Error(
+                "Failed to load messages"
+            );
         }
 
-        const messages = await response.json();
+        const messages =
+            await response.json();
 
-        const chatDiv = document.getElementById("chatContainer");
+
+        const chatDiv =
+            document.getElementById(
+                "chatContainer"
+            );
+
         chatDiv.innerHTML = "";
 
-        console.log(messages);
+        console.log(
+            "Encrypted messages from server:",
+            messages
+        );
 
-        messages.forEach(msg => {
-            addMessageToChat(
-                msg.senderUsername,
-                msg.content,
-                msg.createdDate
-            );
-        });
+        for (const msg of messages) {
+
+            try {
+
+                const decryptedMessage =
+                    await decryptMessage(
+                        msg.ciphertext,
+                        msg.iv,
+                        currentSharedKey
+                    );
+
+
+                console.log(
+                    "Decrypted message:",
+                    decryptedMessage
+                );
+
+
+                addMessageToChat(
+                    msg.senderUsername,
+                    decryptedMessage,
+                    msg.createdDate
+                );
+
+            }
+            catch (err) {
+
+                console.error(
+                    "Failed to decrypt message:",
+                    msg,
+                    err
+                );
+            }
+        }
+
     }
     catch (err) {
-        console.error("Load messages error:", err);
+
+        console.error(
+            "Load messages error:",
+            err
+        );
     }
 }
 
@@ -154,31 +293,124 @@ async function selectUser(userId) {
     }
 
     if (currentReceiverId) {
-        await leaveGroup(currentReceiverId);
+
+        await leaveGroup(
+            currentReceiverId
+        );
     }
 
     currentReceiverId = userId;
 
-    console.log("Selected user:", userId);
+    console.log(
+        "Selected user:",
+        userId
+    );
 
-    await joinGroup(userId);
+    try {
 
-    const textarea = document.querySelector(".textarea");
+        currentSharedKey =
+            await getSharedKey(
+                userId
+            );
 
-    if (textarea) {
-        textarea.style.display = "flex";
+        console.log(
+            "Shared key for current chat:",
+            currentSharedKey
+        );
+
+        await joinGroup(
+            userId
+        );
+
+        const textarea =
+            document.querySelector(
+                ".textarea"
+            );
+
+        if (textarea) {
+
+            textarea.style.display =
+                "flex";
+        }
+
+    }
+    catch (err) {
+
+        console.error(
+            "Failed to initialize E2EE chat:",
+            err
+        );
+
+        currentSharedKey = null;
     }
 }
 
-const input = document.getElementById("messageInput");
+const input =
+    document.getElementById(
+        "messageInput"
+    );
+
 
 if (input) {
-    input.addEventListener("keydown", function (e) {
 
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
+    input.addEventListener(
+        "keydown",
+        function (e) {
 
-            sendMessage();
+            if (
+                e.key === "Enter" &&
+                !e.shiftKey
+            ) {
+
+                e.preventDefault();
+
+                sendMessage();
+            }
         }
-    });
+    );
+}
+
+function addMessageToChat(
+    sender,
+    content,
+    sendDate
+) {
+
+    const chatDiv =
+        document.getElementById(
+            "chatContainer"
+        );
+
+
+    const messageDiv =
+        document.createElement(
+            "div"
+        );
+
+
+    messageDiv.classList.add(
+        "message"
+    );
+
+
+    messageDiv.innerHTML = `
+        <h2>${sender}</h2>
+
+        <p>${content}</p>
+
+        <p>
+            <small>
+                ${new Date(sendDate).toLocaleString()}
+            </small>
+        </p>
+    `;
+
+
+    chatDiv.appendChild(
+        messageDiv
+    );
+
+
+    chatDiv.scrollTop =
+        chatDiv.scrollHeight;
 }

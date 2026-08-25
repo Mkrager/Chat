@@ -22,5 +22,13 @@ namespace Chat.App.Controllers
 
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("{recieverId}/public-key", Name = "GetPublicKeyByUserId")]
+        public async Task<IActionResult> GetPublicKeyByUserId(Guid recieverId)
+        {
+           var publicKey = await _userDataService.GetPublicKeyByUserId(recieverId);
+            return Json(new { publicKey = publicKey.Data });
+        }
     }
 }

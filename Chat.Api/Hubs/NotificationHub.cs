@@ -30,17 +30,20 @@ namespace Chat.Api.Hubs
             await Clients.Caller.SendAsync("GroupLeft", groupName);
         }
 
-        public async Task SendMessageToGroup(Guid recieverId, string message, string receiverUserId)
+        public async Task SendMessageToGroup(Guid receiverId, string ciphertext, string iv)
         {
-            var groupName = GetGroupName(recieverId);
+            var groupName = GetGroupName(receiverId);
 
-            var result = await _mediator.Send(new PostMessageCommand()
-            {
-                Content = message,
-                ReceiverId = receiverUserId
-            });
+            var result = await _mediator.Send(
+                new PostMessageCommand
+                {
+                    Ciphertext = ciphertext,
+                    Iv = iv,
+                    ReceiverId = receiverId.ToString()
+                });
 
-            await Clients.Group(groupName).SendAsync("SendMessage", result);
+            await Clients.Group(groupName)
+                .SendAsync("SendMessage", result);
         }
 
         private string GetGroupName(Guid recieverId)
