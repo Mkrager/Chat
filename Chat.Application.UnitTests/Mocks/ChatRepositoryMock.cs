@@ -13,7 +13,7 @@ namespace Chat.Application.UnitTests.Mocks
                 new Message
                 {
                     Id = Guid.Parse("d13b166b-8f28-4614-9fb7-32322fee1765"),
-                    Content = "Test",
+                    Iv = "Test",
                     CreatedDate = DateTime.Now.AddDays(1),
                     CreatedBy = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6"),
                     ReceiverId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad")
@@ -21,7 +21,7 @@ namespace Chat.Application.UnitTests.Mocks
                 new Message
                 {
                     Id = Guid.Parse("d13b166b-8f28-4614-9fb7-32322fee1765"),
-                    Content = "Test2",
+                    Iv = "Test2",
                     CreatedDate = DateTime.Now.AddDays(1),
                     CreatedBy = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6"),
                     ReceiverId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad")
@@ -29,7 +29,7 @@ namespace Chat.Application.UnitTests.Mocks
                 new Message
                 {
                     Id = Guid.Parse("d13b166b-8f28-4614-9fb7-32322fee1765"),
-                    Content = "Test3",
+                    Iv = "Test3",
                     CreatedDate = DateTime.Now.AddDays(1),
                     CreatedBy = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6"),
                     ReceiverId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad")
@@ -38,11 +38,14 @@ namespace Chat.Application.UnitTests.Mocks
 
             var mockChatRepository = new Mock<IChatRepository>();
             mockChatRepository
-                .Setup(repo => repo.ListAllMessages(It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .ReturnsAsync((Guid userId1, Guid userId2) =>
+                .Setup(repo => repo.ListMessages(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<int>(), It.IsAny<int>()))
+                .ReturnsAsync((Guid userId1, Guid userId2, int page, int pageSize) =>
                     messages.Where(x =>
                         (x.CreatedBy == userId1 && x.ReceiverId == userId2) ||
                         (x.CreatedBy == userId2 && x.ReceiverId == userId1))
+                    .OrderByDescending(x => x.CreatedDate)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
                     .OrderBy(x => x.CreatedDate)
                     .ToList());
 

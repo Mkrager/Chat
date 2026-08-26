@@ -11,7 +11,7 @@ namespace Chat.Application.UnitTests.Mocks
             var mockAuthService = new Mock<IAuthenticationService>();
 
             mockAuthService.Setup(service => service.RegisterAsync(It.IsAny<RegistrationRequest>()))
-                .ReturnsAsync((Guid userId) => userId = Guid.NewGuid());
+                .ReturnsAsync((RegistrationRequest request) => Guid.NewGuid());
 
             mockAuthService.Setup(service => service.AuthenticateAsync(It.IsAny<AuthenticationRequest>()))
                 .ReturnsAsync((AuthenticationRequest request) =>

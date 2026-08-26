@@ -31,7 +31,8 @@ namespace Chat.Application.UnitTests.Chat.Commands
             var handler = new PostMessageCommandHandler(_mapper, _mockChatRepository.Object, _mockUserRepository.Object);
             var command = new PostMessageCommand
             {
-                Content = "Test4",
+                Iv = "TestIv",
+                Ciphertext = "TestCiphertext",
                 ReceiverId = "d463ee4a-ad5c-4eb7-be35-3f0991bc20ad"
             };
 
@@ -40,45 +41,46 @@ namespace Chat.Application.UnitTests.Chat.Commands
             var userId = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6");
             var receiverId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad");
 
-            var allMessges = await _mockChatRepository.Object.ListAllMessages(userId, receiverId);
+            var allMessges = await _mockChatRepository.Object.ListMessages(userId, receiverId, 1, 50);
             allMessges.Count.ShouldBe(4);
 
-            var postedMessages = allMessges.FirstOrDefault(a => a.Content == command.Content && a.CreatedBy == userId);
+            var postedMessages = allMessges.FirstOrDefault(a => a.Iv == command.Iv && a.Ciphertext == command.Ciphertext && a.CreatedBy == userId);
             postedMessages.ShouldNotBeNull();
-            postedMessages.Content.ShouldBe(command.Content);
+            postedMessages.Iv.ShouldBe(command.Iv);
+            postedMessages.Ciphertext.ShouldBe(command.Ciphertext);
             postedMessages.CreatedBy.ShouldBe(userId);
         }
 
         [Fact]
-        public async void Validator_ShouldHaveError_WhenEmptyContent()
+        public async void Validator_ShouldHaveError_WhenEmptyIv()
         {
             var validator = new PostMessageCommandValidator();
             var query = new PostMessageCommand
             {
-                Content = "",
+                Iv = "",
                 ReceiverId = "1235634645"
             };
 
             var result = await validator.ValidateAsync(query);
 
             Assert.False(result.IsValid);
-            Assert.Contains(result.Errors, f => f.PropertyName == "Content");
+            Assert.Contains(result.Errors, f => f.PropertyName == "Iv");
         }
 
         [Fact]
-        public async void Validator_ShouldHaveError_WhenContentContainsOnlySpace()
+        public async void Validator_ShouldHaveError_WhenIvContainsOnlySpace()
         {
             var validator = new PostMessageCommandValidator();
             var query = new PostMessageCommand
             {
-                Content = " ",
+                Iv = " ",
                 ReceiverId = "1235634645"
             };
 
             var result = await validator.ValidateAsync(query);
 
             Assert.False(result.IsValid);
-            Assert.Contains(result.Errors, f => f.PropertyName == "Content");
+            Assert.Contains(result.Errors, f => f.PropertyName == "Iv");
         }
     }
 }

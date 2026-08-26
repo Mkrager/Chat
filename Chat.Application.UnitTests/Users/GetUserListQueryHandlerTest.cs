@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Chat.Application.Contracts.Identity;
 using Chat.Application.Contracts.Persistance;
-using Chat.Application.Features.Users.GetUserList;
+using Chat.Application.Features.Users.Queries.GetUserList;
 using Chat.Application.Profiles;
 using Chat.Application.UnitTests.Mocks;
 using Moq;

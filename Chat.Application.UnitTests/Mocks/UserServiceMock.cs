@@ -1,5 +1,5 @@
 ﻿using Chat.Application.Contracts.Persistance;
-using Chat.Application.DTOs;
+using Chat.Domain.Entities;
 using Moq;
 
 namespace Chat.Application.UnitTests.Mocks
@@ -8,41 +8,41 @@ namespace Chat.Application.UnitTests.Mocks
     {
         public static Mock<IUserRepository> GetUserService()
         {
-            var users = new List<GetUserDetailsResponse>
+            var users = new List<User>
                 {
-                    new GetUserDetailsResponse
+                    new User
                     {
-                        UserId = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6"),
-                        UserName = "user1", Email = "user1@example.com",
+                        Id = Guid.Parse("35b820e5-1cea-47c8-a6a0-cedccfbda4e6"),
+                        Username = "user1", 
+                        Email = "user1@example.com",
                     },
-                    new GetUserDetailsResponse
+                    new User
                     {
-                        UserId = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad"),
-                        UserName = "user2", Email = "user2@example.com",
+                        Id = Guid.Parse("d463ee4a-ad5c-4eb7-be35-3f0991bc20ad"),
+                        Username = "user2", 
+                        Email = "user2@example.com",
                     }
                 };
 
-            var mockUserService = new Mock<IUserRepository>();
+            var mockRepository = new Mock<IUserRepository>();
 
-            //mockUserService.Setup(repo => repo.GetUserDetailsAsync(It.IsAny<string>()))
-            //    .ReturnsAsync((string userId) => users.First(a => a.UserId == userId));
+            mockRepository.Setup(r => r.ListAllAsync())
+                .ReturnsAsync(users);
 
+            mockRepository.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync((Guid id) => users.FirstOrDefault(x => x.Id == id));
 
-            //mockUserService.Setup(repo => repo.GetUserListAsync())
-            //    .ReturnsAsync(users);
+            mockRepository.Setup(r => r.GetUsersByIdsAsync(It.IsAny<IEnumerable<Guid>>()))
+                .ReturnsAsync((IEnumerable<Guid> userIds) => users.Where(u => userIds.Contains(u.Id)).ToList());
 
-            //mockUserService.Setup(repo => repo.GetUsersByIdsAsync(It.IsAny<IEnumerable<Guid>>()))
-            //    .ReturnsAsync((IEnumerable<Guid> userIds) =>
-            //    {
-            //        return users.Where(u => userIds.Contains(u.UserId))
-            //        .Select(u => new GetUserDetailsResponse()
-            //        {
-            //            UserId = u.UserId,
-            //            UserName = u.UserName
-            //        }).ToList();
-            //    });
+            mockRepository.Setup(r => r.AddAsync(It.IsAny<User>()))
+                .ReturnsAsync((User user) =>
+                {
+                    users.Add(user);
+                    return user;
+                });
 
-            return mockUserService;
+            return mockRepository;
         }
     }
 }
