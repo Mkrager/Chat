@@ -12,7 +12,10 @@
 
         @foreach (var user in Model.Users)
         {
-            <button onclick="selectUser('@user.Id')">@user.Username</button>
+            if (user.Id != Guid.Parse(User.FindFirst("Sub")?.Value))
+            {
+                <button onclick="selectUser('@user.Id')">@user.Username</button>
+            }
         }
     </aside>
 
