@@ -15,17 +15,21 @@ namespace Chat.Api.Controllers
         [HttpGet("{ReceiverUserId}", Name = "GetAllMessages")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<MessageListVm>>> GetAllMessages(Guid ReceiverUserId)
+        public async Task<ActionResult<List<MessageListVm>>> GetAllMessages(Guid ReceiverUserId, int page, int pageSize)
         {
-            var dtos = await mediator.Send(new GetMessagesListQuery()
+            page = Math.Max(page, 1);
+            pageSize = Math.Clamp(pageSize, 1, 100);
+
+            var dtos = await mediator.Send(new GetMessagesListQuery
             {
                 UserId = currentUserService.UserId.Value,
-                ReceiverUserId = ReceiverUserId
+                ReceiverUserId = ReceiverUserId,
+                Page = page,
+                PageSize = pageSize
             });
 
             return Ok(dtos);
         }
-
         [Authorize]
         [HttpPost(Name = "PostMessage")]
         public async Task<ActionResult<Guid>> PostMessage([FromBody] PostMessageCommand postMessageCommand)

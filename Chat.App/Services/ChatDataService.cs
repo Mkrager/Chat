@@ -24,9 +24,9 @@ namespace Chat.App.Services
             return await HandleResponse<Guid>(response);
         }
 
-        public async Task<ApiResponse<List<MessageListViewModel>>> GetAllMessages(Guid userId)
+        public async Task<ApiResponse<List<MessageListViewModel>>> GetAllMessages(Guid userId, int page, int pageSize)
         {
-            var response = await _httpClient.GetAsync($"chat/{userId}");
+            var response = await _httpClient.GetAsync($"chat/{userId}?page={page}&pageSize={pageSize}");
             return await HandleResponse<List<MessageListViewModel>>(response);
         }
     }

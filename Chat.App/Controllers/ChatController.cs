@@ -23,11 +23,11 @@ namespace Chat.App.Controllers
         {
             var users = await _userDataService.GetAllUsers();
 
-            var messages = await _chatDataService.GetAllMessages(Guid.Empty);
+            //var messages = await _chatDataService.GetAllMessages(Guid.Empty);
 
             var chatViewModel = new ChatViewModel()
             {
-                Messages = messages.Data,
+                //Messages = messages.Data,
                 Users = users.Data,
                 JwtToken = _authenticationService.GetAccessToken()
             };
@@ -37,9 +37,10 @@ namespace Chat.App.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetMessages([FromQuery] Guid userId)
+        public async Task<IActionResult> GetMessages(Guid userId, int page, int pageSize)
+
         {
-            var messages = await _chatDataService.GetAllMessages(userId);
+            var messages = await _chatDataService.GetAllMessages(userId, page, pageSize);
 
             return Json(messages.Data);
         }

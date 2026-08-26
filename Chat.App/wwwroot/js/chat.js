@@ -4,12 +4,29 @@
     })
     .build();
 
+
 let currentGroup = null;
 let currentReceiverId = null;
 let currentSharedKey = null;
 
+let currentPage = 1;
+const pageSize = 50;
+
+let isLoadingMessages = false;
+let hasMoreMessages = true;
+
 connection.on("SendMessage", async (msg) => {
+
     try {
+
+        if (msg.receiverId !== currentReceiverId &&
+            msg.senderId !== currentReceiverId) {
+            return;
+        }
+
+        if (!currentSharedKey) {
+            return;
+        }
 
         const decryptedMessage = await decryptMessage(
             msg.ciphertext,
@@ -35,7 +52,8 @@ connection.on("SendMessage", async (msg) => {
     }
 });
 
-connection.on("GroupJoined", (groupName) => {
+
+connection.on("GroupJoined", async (groupName) => {
 
     console.log(
         "Joined group:",
@@ -44,7 +62,14 @@ connection.on("GroupJoined", (groupName) => {
 
     currentGroup = groupName;
 
-    loadMessages(currentReceiverId);
+    currentPage = 1;
+    hasMoreMessages = true;
+    isLoadingMessages = false;
+
+    await loadMessages(
+        currentReceiverId,
+        1
+    );
 });
 
 
@@ -54,6 +79,7 @@ connection.on("GroupLeft", (groupName) => {
         "Left group:",
         groupName
     );
+
 });
 
 async function startConnection() {
@@ -80,6 +106,7 @@ async function startConnection() {
         );
     }
 }
+
 
 startConnection();
 
@@ -114,12 +141,14 @@ async function joinGroup(receiverId) {
     }
 }
 
+
 async function leaveGroup(receiverId) {
 
     if (
         connection.state !==
         signalR.HubConnectionState.Connected
     ) {
+
         return;
     }
 
@@ -154,6 +183,7 @@ async function sendMessage() {
         !message ||
         !currentReceiverId
     ) {
+
         return;
     }
 
@@ -179,16 +209,19 @@ async function sendMessage() {
     }
 
     try {
+
         const encrypted =
             await encryptMessage(
                 message,
                 currentSharedKey
             );
 
+
         console.log(
             "Encrypted message:",
             encrypted
         );
+
 
         await connection.invoke(
             "SendMessageToGroup",
@@ -196,6 +229,7 @@ async function sendMessage() {
             encrypted.ciphertext,
             encrypted.iv
         );
+
 
         input.value = "";
 
@@ -209,14 +243,64 @@ async function sendMessage() {
     }
 }
 
-async function loadMessages(receiverId) {
+async function loadMessages(
+    receiverId,
+    page = 1
+) {
+
+    if (!receiverId) {
+        return;
+    }
+
+
+    if (isLoadingMessages) {
+        return;
+    }
+
+
+    if (
+        !hasMoreMessages &&
+        page > 1
+    ) {
+
+        return;
+    }
+
+
+    if (!currentSharedKey) {
+
+        console.error(
+            "Shared key is not available."
+        );
+
+        return;
+    }
+
+
+    isLoadingMessages = true;
+
+
+    const chatDiv =
+        document.getElementById(
+            "chatContainer"
+        );
+
+
+    const oldScrollHeight =
+        chatDiv.scrollHeight;
+
+    const oldScrollTop =
+        chatDiv.scrollTop;
+    const sharedKey = currentSharedKey;
+    const selectedReceiverId = currentReceiverId;
+
 
     try {
 
-        const response =
-            await fetch(
-                `/Chat/GetMessages?userId=${encodeURIComponent(receiverId)}`
-            );
+        const response = await fetch(
+            `/Chat/GetMessages?userId=${encodeURIComponent(receiverId)}&page=${page}&pageSize=${pageSize}`
+        );
+
 
         if (!response.ok) {
 
@@ -225,55 +309,73 @@ async function loadMessages(receiverId) {
             );
         }
 
+
         const messages =
             await response.json();
 
+        if (
+            currentReceiverId !==
+            selectedReceiverId
+        ) {
 
-        const chatDiv =
-            document.getElementById(
-                "chatContainer"
-            );
+            return;
+        }
 
-        chatDiv.innerHTML = "";
 
         console.log(
-            "Encrypted messages from server:",
+            `Loaded page ${page}:`,
             messages
         );
 
-        for (const msg of messages) {
 
-            try {
+        if (
+            messages.length < pageSize
+        ) {
 
-                const decryptedMessage =
-                    await decryptMessage(
-                        msg.ciphertext,
-                        msg.iv,
-                        currentSharedKey
-                    );
+            hasMoreMessages = false;
+        }
 
+        if (page === 1) {
 
-                console.log(
-                    "Decrypted message:",
-                    decryptedMessage
-                );
+            chatDiv.innerHTML = "";
 
 
-                addMessageToChat(
-                    msg.senderUsername,
-                    decryptedMessage,
-                    msg.createdDate
-                );
+            for (const msg of messages) {
 
-            }
-            catch (err) {
-
-                console.error(
-                    "Failed to decrypt message:",
+                await decryptAndAddMessage(
                     msg,
-                    err
+                    false,
+                    sharedKey
                 );
             }
+
+            currentPage = 1;
+
+            chatDiv.scrollTop =
+                chatDiv.scrollHeight;
+        }
+        else {
+            const olderMessages =
+                [...messages].reverse();
+
+
+            for (
+                const msg of olderMessages
+            ) {
+
+                await decryptAndAddMessage(
+                    msg,
+                    true,
+                    sharedKey
+                );
+            }
+
+
+            currentPage = page;
+            chatDiv.scrollTop =
+                chatDiv.scrollHeight -
+                oldScrollHeight +
+                oldScrollTop;
         }
 
     }
@@ -281,6 +383,60 @@ async function loadMessages(receiverId) {
 
         console.error(
             "Load messages error:",
+            err
+        );
+    }
+    finally {
+
+        isLoadingMessages = false;
+    }
+}
+
+async function decryptAndAddMessage(
+    msg,
+    prepend = false,
+    sharedKey = currentSharedKey
+) {
+
+    try {
+
+        if (!sharedKey) {
+
+            console.error(
+                "Shared key is not available."
+            );
+
+            return;
+        }
+
+
+        const decryptedMessage =
+            await decryptMessage(
+                msg.ciphertext,
+                msg.iv,
+                sharedKey
+            );
+
+
+        console.log(
+            "Decrypted message:",
+            decryptedMessage
+        );
+
+
+        addMessageToChat(
+            msg.senderUsername,
+            decryptedMessage,
+            msg.createdDate,
+            prepend
+        );
+
+    }
+    catch (err) {
+
+        console.error(
+            "Failed to decrypt message:",
+            msg,
             err
         );
     }
@@ -300,18 +456,35 @@ async function selectUser(userId) {
     }
 
     currentReceiverId = userId;
+    currentGroup = null;
+    currentPage = 1;
+    hasMoreMessages = true;
+    isLoadingMessages = false;
+    currentSharedKey = null;
+
 
     console.log(
         "Selected user:",
         userId
     );
 
-    try {
 
-        currentSharedKey =
+    try {
+        const sharedKey =
             await getSharedKey(
                 userId
             );
+
+        if (
+            currentReceiverId !==
+            userId
+        ) {
+
+            return;
+        }
+
+        currentSharedKey =
+            sharedKey;
 
         console.log(
             "Shared key for current chat:",
@@ -345,35 +518,11 @@ async function selectUser(userId) {
     }
 }
 
-const input =
-    document.getElementById(
-        "messageInput"
-    );
-
-
-if (input) {
-
-    input.addEventListener(
-        "keydown",
-        function (e) {
-
-            if (
-                e.key === "Enter" &&
-                !e.shiftKey
-            ) {
-
-                e.preventDefault();
-
-                sendMessage();
-            }
-        }
-    );
-}
-
 function addMessageToChat(
     sender,
     content,
-    sendDate
+    sendDate,
+    prepend = false
 ) {
 
     const chatDiv =
@@ -400,17 +549,78 @@ function addMessageToChat(
 
         <p>
             <small>
-                ${new Date(sendDate).toLocaleString()}
+                ${new Date(
+        sendDate
+    ).toLocaleString()}
             </small>
         </p>
     `;
 
 
-    chatDiv.appendChild(
-        messageDiv
+    if (prepend) {
+
+        chatDiv.prepend(
+            messageDiv
+        );
+
+    }
+    else {
+
+        chatDiv.appendChild(
+            messageDiv
+        );
+    }
+}
+
+const chatContainer =
+    document.getElementById(
+        "chatContainer"
     );
 
 
-    chatDiv.scrollTop =
-        chatDiv.scrollHeight;
+if (chatContainer) {
+
+    chatContainer.addEventListener(
+        "scroll",
+        async () => {
+
+            if (
+                chatContainer.scrollTop <= 100 &&
+                !isLoadingMessages &&
+                hasMoreMessages &&
+                currentReceiverId
+            ) {
+
+                await loadMessages(
+                    currentReceiverId,
+                    currentPage + 1
+                );
+            }
+        }
+    );
+}
+
+const input =
+    document.getElementById(
+        "messageInput"
+    );
+
+
+if (input) {
+
+    input.addEventListener(
+        "keydown",
+        function (e) {
+
+            if (
+                e.key === "Enter" &&
+                !e.shiftKey
+            ) {
+
+                e.preventDefault();
+
+                sendMessage();
+            }
+        }
+    );
 }

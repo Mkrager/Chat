@@ -12,16 +12,15 @@ namespace Chat.Persistence.Repositories
 
         public async Task<List<Message>> ListMessages(Guid userId1, Guid userId2, int page, int pageSize)
         {
-            var messages = await _dbContext.Messages
-                .Where(x => (x.CreatedBy == userId1 && x.ReceiverId == userId2) ||
-                            (x.CreatedBy == userId2 && x.ReceiverId == userId1))
+            return await _dbContext.Messages
+                .Where(x =>
+                    (x.CreatedBy == userId1 && x.ReceiverId == userId2) ||
+                    (x.CreatedBy == userId2 && x.ReceiverId == userId1))
                 .OrderByDescending(x => x.CreatedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .OrderBy(x => x.CreatedDate)
                 .ToListAsync();
-
-            return messages;
         }
-
     }
 }
