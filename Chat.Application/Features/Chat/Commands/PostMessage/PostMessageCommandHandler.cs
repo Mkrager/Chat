@@ -30,7 +30,7 @@ namespace Chat.Application.Features.Chat.Commands.PostMessage
 
             var response = _mapper.Map<PostMessageResponse>(savedMessage);
 
-            response.SenderUserName = user.Username;
+            response.SenderUsername = user.Username;
 
             return response;
         }

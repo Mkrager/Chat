@@ -19,11 +19,6 @@ connection.on("SendMessage", async (msg) => {
 
     try {
 
-        if (msg.receiverId !== currentReceiverId &&
-            msg.senderId !== currentReceiverId) {
-            return;
-        }
-
         if (!currentSharedKey) {
             return;
         }
@@ -37,7 +32,7 @@ connection.on("SendMessage", async (msg) => {
         console.log("Decrypted:", decryptedMessage);
 
         addMessageToChat(
-            msg.senderUserName,
+            msg.senderUsername,
             decryptedMessage,
             msg.createdDate
         );
@@ -51,7 +46,6 @@ connection.on("SendMessage", async (msg) => {
         );
     }
 });
-
 
 connection.on("GroupJoined", async (groupName) => {
 
